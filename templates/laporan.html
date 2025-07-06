@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Laporan Hasil Survei</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.16.4/flowbite.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+</head>
+<body class="bg-gray-50 font-sans text-sm">
+    <!-- Navigasi Utama -->
+    <div class="max-w-7xl mx-auto px-4 py-4 bg-white shadow-sm rounded-b flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6">
+      <div>
+        <h1 class="text-2xl font-bold text-blue-500">Laporan Survei Jasa Raharja</h1>
+        <p class="text-gray-500">Rekap hasil survei kepuasan layanan berdasarkan data responden</p>
+      </div>
+      <div class="flex gap-2 mt-2 sm:mt-0">
+        <a href="/dashboard" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition">
+          ⬅️ Dashboard
+        </a>
+        <a href="/report" class="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-2 px-4 rounded transition">
+            🙋‍♂️ Data Responden
+        </a>
+        <a href="/laporan" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded transition">
+            🗒️ Laporan
+        </a>
+      </div>
+    </div>
+  
+    <!-- Laporan Konten -->
+    <div id="laporan" class="max-w-7xl mx-auto p-6 bg-white text-sm shadow rounded max-w-[794px]">
+      {% for q, jawaban_dict in rekap.items() %}
+      <div class="mb-8">
+        <h2 class="text-base font-semibold text-gray-700 mb-2">{{ pertanyaan_label[q] }}</h2>
+        <div class="overflow-x-auto bg-white shadow rounded">
+          <table class="min-w-full divide-y divide-gray-200 text-sm">
+            <thead class="bg-blue-100 text-gray-700">
+              <tr>
+                <th class="px-4 py-2 text-left w-96">Jawaban</th>
+                <th class="px-4 py-2 text-left">Jumlah Responden</th>
+                <th class="px-4 py-2 text-left">Nilai</th>
+                <th class="px-4 py-2 text-right">Skor Responden</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              {% for jawaban, jumlah in jawaban_dict.items() %}
+              <tr>
+                <td class="px-4 py-2 w-96">{{ jawaban }}</td>
+                <td class="px-4 py-2">{{ jumlah }}</td>
+                <td class="px-4 py-2">
+                  {% if q in nilai_mapping and jawaban in nilai_mapping[q] %}
+                    {{ nilai_mapping[q][jawaban] }}
+                  {% else %}
+                    -
+                  {% endif %}
+                </td>
+                <td class="px-4 py-2 text-right">
+                  {% if q in nilai_mapping and jawaban in nilai_mapping[q] %}
+                    {{ jumlah * nilai_mapping[q][jawaban] }}
+                  {% else %}
+                    -
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {% endfor %}
+  
+      <!-- Total Skor -->
+      <div class="mb-6">
+        <h2 class="text-base font-semibold text-gray-700 mb-2">Total Skor Survei</h2>
+        <div class="overflow-x-auto bg-white shadow rounded">
+          <table class="min-w-full divide-y divide-gray-200 text-sm">
+            <tbody class="divide-y divide-gray-200">
+              <tr>
+                <td class="px-4 py-2 font-medium text-gray-600">Total Skor Responden Real</td>
+                <td class="px-4 py-2">{{ total_skor }}</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-2 font-medium text-gray-600">Total Skor Responden Maksimal</td>
+                <td class="px-4 py-2">{{ total_responden * jumlah_pertanyaan_skor * 4 }}</td>
+              </tr>
+              <tr>
+                <td class="px-4 py-2 font-medium text-gray-600">Nilai Survei (%)</td>
+                <td class="px-4 py-2">{{ nilai_survei }}%</td>
+              </tr>
+              <tr class="bg-blue-50">
+                <td class="px-4 py-2 text-sm font-semibold text-gray-700">Predikat Survei</td>
+                <td class="px-4 py-2 font-bold text-blue-600">{{ predikat }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+  
+      <!-- Navigasi Bawah (Opsional Redundansi) -->
+      <div class="text-center mt-6">
+        <a href="/dashboard" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300">
+          ⬅️ Kembali ke Dashboard
+        </a>
+        <a href="/laporan/excel" class="ml-2 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300">
+          ⬇️ Unduh Laporan Excel
+        </a>
+      </div>
+    </div>
+  </body>
+  
+</body>
+</html>

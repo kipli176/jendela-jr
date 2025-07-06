@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Survei Pelayanan Jasa Raharja</title>
+  <!-- Tailwind CSS via CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <!-- Flowbite -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.16.4/flowbite.min.css">
+  <!-- Select2 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .warning {
+      color: red;
+      font-weight: bold;
+      display: none;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .emoji-label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .section {
+      background-color: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .validation-message {
+      color: red;
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
+      display: none;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100 min-h-screen p-4">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-2xl font-bold text-center text-blue-500 mb-6">FORM SURVEI JENDELA JASA RAHARJA</h1>
+
+    <form id="surveyForm" action="{{ url_for('submit') }}" method="post">
+      <!-- IDENTITAS KORBAN -->
+      <div class="section">
+        <h2 class="text-md font-semibold text-blue-500 mb-4">Informasi Pribadi</h2>
+
+        <div class="mb-4">
+          <label class="block mb-1 text-sm font-semibold text-gray-700">Nama Lengkap Korban (Sesuai KTP):</label>
+          <input type="text" id="name" name="name"
+            class="shadow text-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required>
+          <div id="name-error" class="validation-message">Nama harus diisi</div>
+        </div>
+
+        <div class="mb-4">
+          <label class="block mb-1 text-sm font-semibold text-gray-700">Usia:</label>
+          <input type="number" id="age" name="age"
+            class="shadow text-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required>
+          <div id="age-error" class="validation-message">Usia harus diisi</div>
+        </div>
+
+        <div class="mb-4">
+          <label class="block mb-1 text-sm font-semibold text-gray-700">Nomor HP:</label>
+          <input type="tel" id="phone" name="phone"
+            class="shadow text-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required>
+          <div id="phone-error" class="validation-message">Nomor HP harus diisi</div>
+        </div>
+
+        <div class="mb-4">
+          <label class="block mb-1 text-sm font-semibold text-gray-700">Tanggal Kecelakaan:</label>
+          <input type="date" id="accident-date" name="accident-date"
+            class="shadow text-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required>
+          <div id="date-error" class="validation-message">Tanggal kecelakaan harus diisi</div>
+        </div>
+
+        <div class="mb-4">
+          <label class="block mb-1 text-sm font-semibold text-gray-700">Lokasi Kecelakaan:</label>
+          <input type="text" id="location" name="location"
+            class="shadow text-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required>
+          <div id="location-error" class="validation-message">Lokasi kecelakaan harus diisi</div>
+        </div>
+
+        <div class="mb-4">
+          <label class="block mb-1 text-sm font-semibold text-gray-700">Kecamatan:</label>
+          <select id="kecamatan-select"
+            class="shadow text-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required style="width: 100%"></select>
+          <div id="hospital-error" class="validation-message">Pilih kecamatan</div>
+          <input type="hidden" name="kabupaten" id="input-kabupaten">
+          <input type="hidden" name="kecamatan" id="input-kecamatan">
+        </div>
+
+        <div class="mb-4">
+          <label class="block mb-1 text-sm font-semibold text-gray-700">Nomor Polisi Kendaraan:</label>
+          <div class="flex gap-2">
+            <input type="text" id="vehicle" name="vehicle"
+              class="shadow text-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              placeholder="Tuliskan PEJAKI jika pejalan kaki" required>
+            <button type="button" id="cek-nopol-btn"
+              class="bg-blue-500 hover:bg-blue-600 text-white text-xs font-semibold py-2 px-3 rounded">
+              Cek Pajak
+            </button>
+          </div>
+          <div id="vehicle-error" class="validation-message">Nomor polisi harus diisi</div>
+          <div id="spinner" class="text-blue-500 text-sm mt-2 hidden">🔄 Mengecek status pajak...</div>
+          <div id="tax-warning" class="text-sm mt-2 text-red-500 hidden">⚠️ Jangan lupa membayar pajak kendaraan.</div>
+          <div id="tax-thanks" class="text-sm mt-2 text-green-600 hidden">✅ Terima kasih sudah membayar pajak.</div>
+
+        </div>
+
+        <div class="mb-4 hidden">
+          <label class="block mb-1 text-sm font-semibold text-gray-700">Status Pajak:</label>
+          <div class="flex items-center gap-6">
+            <div class="emoji-label">
+              <input type="radio" id="tax-paid" name="tax-status" value="LUNAS" checked>
+              <span class="text-sm text-green-500">✅</span>
+              <label for="tax-paid" class="text-sm">Lunas</label>
+            </div>
+            <div class="emoji-label">
+              <input type="radio" id="tax-unpaid" name="tax-status" value="BELUM">
+              <span class="text-md text-yellow-500">⚠️</span>
+              <label for="tax-unpaid" class="text-sm">Belum</label>
+            </div>
+          </div>
+          <div id="tax-warning" class="warning mt-2 text-sm">Jangan Lupa Membayar Pajak Kendaraan</div>
+        </div>
+
+        <div class="mb-4">
+          <label class="block mb-1 text-sm font-semibold text-gray-700">Nama Rumah Sakit:</label>
+          <select id="hospital" name="hospital"
+            class="shadow text-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required style="width: 100%"></select>
+          <div id="hospital-error" class="validation-message">Nama rumah sakit harus diisi</div>
+        </div>
+
+        <input type="hidden" id="kabupaten" name="kabupaten">
+      </div>
+
+      <!-- PERTANYAAN SURVEI -->
+      <div class="section">
+        <h2 class="text-md font-semibold text-blue-500 mb-4 text-center">Survei Pelayanan</h2>
+        <p class="text-justify text-gray-600 mb-6 text-sm">Semoga Anda segera pulih dan sehat kembali. Sebelum
+          meninggalkan rumah sakit, mohon bantu kami dengan mengisi survei singkat ini agar kami dapat terus
+          meningkatkan pelayanan</p>
+
+        <!-- Pertanyaan 1-5 -->
+        <div class="mb-4">
+          <label class="block mb-1 text-sm font-semibold text-gray-700">1. Setelah kecelakaan, apakah ada petugas Jasa
+            Raharja yang menghubungi Anda?</label>
+          <div class="flex items-center gap-6">
+            <div class="emoji-label">
+              <input type="radio" id="q1-yes" name="q1" value="Ada" checked>
+              <span class="text-sm text-green-500">👍</span>
+              <label for="q1-yes" class="text-sm">Ya</label>
+            </div>
+            <div class="emoji-label">
+              <input type="radio" id="q1-no" name="q1" value="Tidak">
+              <span class="text-md text-gray-500">👎</span>
+              <label for="q1-no" class="text-sm">Tidak</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="block mb-1 text-sm font-semibold text-gray-700">2. Darimana Anda mengetahui tentang Jasa
+            Raharja?</label>
+          <select id="q2" name="q2"
+            class="shadow text-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required>
+            <option value="" disabled selected>Pilih Sumber Informasi</option>
+            <option value="Petugas Jasa Raharja">👨‍💼 Petugas Jasa Raharja</option>
+            <option value="Petugas Rumah Sakit">🏥 Petugas Rumah Sakit</option>
+            <option value="Petugas Kepolisian">👮‍♂️ Petugas Kepolisian</option>
+            <option value="Media Massa">📰 Media Massa</option>
+            <option value="Lainnya">👨‍👩‍👧‍👦 Orang yang pernah menerima santunan/masyarakat umum</option>
+          </select>
+          <div id="q2-error" class="validation-message">Harap pilih sumber informasi</div>
+        </div>
+
+        <div class="mb-4">
+          <label class="block mb-1 text-sm font-semibold text-gray-700">3. Siapa yang mengurus dokumen persyaratan
+            santunan?</label>
+          <select id="q3" name="q3"
+            class="shadow text-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required>
+            <option value="" disabled selected>Pilih Pelaku Pengurusan</option>
+            <option value="Korban">👤 Diri Sendiri</option>
+            <option value="Ahli Waris">👨‍👩‍👧‍👦 Ahli Waris</option>
+            <option value="Keluarga">👪 Keluarga</option>
+            <option value="Pihak Ketiga">🤝 Pihak Ketiga</option>
+          </select>
+          <div id="q3-error" class="validation-message">Harap pilih pelaku pengurusan</div>
+        </div>
+
+        <div class="mb-4">
+          <label class="block mb-1 text-sm font-semibold text-gray-700">4. Bagaimana proses pengurusan dokumen
+            persyaratan santunan?</label>
+          <select id="q4" name="q4"
+            class="shadow text-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required>
+            <option value="" disabled selected>Pilih Metode Pengurusan</option>
+            <option value="Petugas Jasa Raharja">👨‍💼 Seluruhnya dibantu oleh Petugas Jasa Raharja</option>
+            <option value="Petugas Polisi">👮‍♂️ Seluruhnya dibantu oleh Petugas Polisi atau Pihak ke tiga</option>
+            <option value="Sendiri">👤 Diurus sendiri oleh korban ahli waris korban</option>
+          </select>
+          <div id="q4-error" class="validation-message">Harap pilih metode pengurusan</div>
+        </div>
+
+        <div class="mb-4">
+          <label class="block mb-1 text-sm font-semibold text-gray-700">5. Berapa kali Anda mengunjungi kantor Jasa
+            Raharja?</label>
+          <select id="q5" name="q5"
+            class="shadow text-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required>
+            <option value="" disabled selected>Pilih Frekuensi</option>
+            <option value="Tidak Pernah">❌ Tidak Pernah</option>
+            <option value="1 Kali">1️⃣ 1 Kali</option>
+            <option value="2 Kali">2️⃣ 2 Kali</option>
+            <option value="Lebih dari 2 Kali">🔁 Lebih dari 2 Kali</option>
+          </select>
+          <div id="q5-error" class="validation-message">Harap pilih frekuensi kunjungan</div>
+        </div>
+
+        <!-- Pertanyaan 6-11 -->
+        <div class="mb-4">
+          <label class="block mb-1 text-sm font-semibold text-gray-700">6. Berapa kali Anda mengunjungi instansi lain
+            untuk proses santunan?</label>
+          <select id="q6" name="q6"
+            class="shadow text-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required>
+            <option value="" disabled selected>Pilih Frekuensi</option>
+            <option value="Tidak Pernah">❌ Tidak Pernah</option>
+            <option value="1 Kali">1️⃣ 1 Kali</option>
+            <option value="2 Kali">2️⃣ 2 Kali</option>
+            <option value="Lebih dari 2 Kali">🔁 Lebih dari 2 Kali</option>
+          </select>
+          <div id="q6-error" class="validation-message">Harap pilih frekuensi kunjungan</div>
+        </div>
+
+        <div class="mb-4">
+          <label class="block mb-1 text-sm font-semibold text-gray-700">7. Bagaimana tingkat kewajaran biaya rawat
+            inap?</label>
+          <select id="q7" name="q7"
+            class="shadow text-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required>
+            <option value="" disabled selected>Pilih Pendapat</option>
+            <option value="Wajar">👍 Wajar</option>
+            <option value="Tidak Wajar">👎 Tidak Wajar</option>
+          </select>
+          <div id="q7-error" class="validation-message">Harap pilih pendapat</div>
+        </div>
+
+        <div class="mb-4">
+          <label class="block mb-1 text-sm font-semibold text-gray-700">8. Apakah ada biaya tambahan yang dibayarkan
+            kepada petugas Jasa Raharja?</label>
+          <div class="flex items-center gap-6">
+            <div class="emoji-label">
+              <input type="radio" id="q8-no" name="q8" value="Tidak Ada" checked>
+              <span class="text-sm text-green-500">✅</span>
+              <label for="q8-no" class="text-sm">Tidak Ada</label>
+            </div>
+            <div class="emoji-label">
+              <input type="radio" id="q8-yes" name="q8" value="Ada">
+              <span class="text-sm text-yellow-500">⚠️</span>
+              <label for="q8-yes" class="text-sm">Ada</label>
+            </div>
+          </div>
+          <div id="q8-error" class="validation-message">Harap jawab pertanyaan</div>
+        </div>
+
+        <!-- Pertanyaan 9-11 -->
+        <div class="mb-4">
+          <label class="block mb-1 text-sm font-semibold text-gray-700">9. Bagaimana kesan Anda terhadap pelayanan Jasa
+            Raharja?</label>
+          <select id="q9" name="q9"
+            class="shadow text-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required>
+            <option value="" disabled selected>Pilih Tingkat Kepuasan</option>
+            <option value="Sangat Memuaskan">🌟 Sangat Memuaskan</option>
+            <option value="Memuaskan">👍 Memuaskan</option>
+            <option value="Kurang Memuaskan">😐 Kurang Memuaskan</option>
+            <option value="Tidak Memuaskan">👎 Tidak Memuaskan</option>
+          </select>
+          <div id="q9-comment" class="hidden form-group mt-2">
+            <label class="block mb-1 text-sm font-semibold text-gray-700">Alasan:</label>
+            <textarea id="q9-reason" name="q9-reason"
+              class="shadow text-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              rows="2"></textarea>
+          </div>
+          <div id="q9-error" class="validation-message">Harap pilih tingkat kepuasan</div>
+        </div>
+
+        <div class="mb-4">
+          <label class="block mb-1 text-sm font-semibold text-gray-700">10. Bagaimana kesan Anda terhadap pelayanan
+            rumah sakit?</label>
+          <select id="q10" name="q10"
+            class="shadow text-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            required>
+            <option value="" disabled selected>Pilih Tingkat Kepuasan</option>
+            <option value="Sangat Memuaskan">🌟 Sangat Memuaskan</option>
+            <option value="Memuaskan">👍 Memuaskan</option>
+            <option value="Kurang Memuaskan">😐 Kurang Memuaskan</option>
+            <option value="Tidak Memuaskan">👎 Tidak Memuaskan</option>
+          </select>
+          <div id="q10-comment" class="hidden form-group mt-2">
+            <label class="block mb-1 text-sm font-semibold text-gray-700">Alasan:</label>
+            <textarea id="q10-reason" name="q10-reason"
+              class="shadow text-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              rows="2"></textarea>
+          </div>
+          <div id="q10-error" class="validation-message">Harap pilih tingkat kepuasan</div>
+        </div>
+
+        <div class="mb-4">
+          <label class="block mb-1 text-sm font-semibold text-gray-700">11. Saran dan masukan bagi pelayanan Jasa
+            Raharja:</label>
+          <textarea id="suggestion" name="suggestion"
+            class="shadow text-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            rows="3"></textarea>
+        </div>
+      </div>
+
+      <!-- PERNYATAAN -->
+      <div class="section">
+        <div class="mb-4 flex items-start">
+          <input type="checkbox" id="statement" name="statement"
+            class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mr-2"
+            required>
+          <label for="statement" class="text-gray-700 text-sm mb-0">Saya menyatakan bahwa informasi diatas benar dan
+            dapat dipergunakan dalam hal informasi produk, sosialisasi serta pemanfaatan data bagi Jasa Raharja</label>
+          <div id="statement-error" class="validation-message ml-6">Harap centang pernyataan</div>
+        </div>
+
+        <div class="mb-4 flex items-start">
+          <input type="checkbox" id="understanding" name="understanding"
+            class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 mr-2"
+            required>
+          <label for="understanding" class="text-gray-700 text-sm mb-0">Dengan mengisi survey ini, saya memahami hak
+            santunan yang dijamin oleh Jasa Raharja
+            (santunan biaya perawatan maksimal <strong>Rp20.000.000</strong> dan biaya pertolongan pertama (P3K)
+            <strong>Rp1.000.000)</strong></label>
+          <div id="understanding-error" class="validation-message ml-6">Harap centang pernyataan</div>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <button type="submit"
+          class="bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
+          Kirim Survei
+        </button>
+      </div>
+    </form>
+
+    <!-- <div class="thank-you hidden" id="thankYou">
+            <div class="p-6 text-center bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                <h2 class="text-2xl font-bold mb-4 text-blue-500">Terima Kasih!</h2>
+                <p class="text-gray-600 mb-4">
+                    Santunan yang Anda terima merupakan bentuk nyata dari kepedulian negara yang bersumber dari pembayaran Pajak Kendaraan dan SWDKLLJ. 
+                    Dengan mengisi survei ini, Anda membantu kami meningkatkan pelayanan bagi seluruh masyarakat Indonesia.
+                </p>
+                <button class="mt-4 bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300" onclick="window.location.reload()">
+                    Kembali ke Formulir
+                </button>
+            </div>
+        </div> -->
+  </div>
+  <!-- Flowbite JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.16.4/flowbite.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+  <!-- Select2 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const vehicleInput = document.getElementById("vehicle");
+      const cekBtn = document.getElementById("cek-nopol-btn");
+      const spinner = document.getElementById("spinner");
+      const taxPaid = document.getElementById("tax-paid");
+      const taxUnpaid = document.getElementById("tax-unpaid");
+
+      // Format otomatis saat input
+      vehicleInput.addEventListener("input", function (e) {
+        let raw = e.target.value.toUpperCase();
+
+        if (raw.startsWith("PEJAKI")) {
+          e.target.value = "PEJAKI";
+          return;
+        }
+
+        raw = raw.replace(/[^A-Z0-9]/g, "");
+        const match = raw.match(/^([A-Z]{1,2})(\d{1,4})([A-Z]{0,3})$/);
+
+        if (match) {
+          let formatted = match[1];
+          if (match[2]) formatted += "-" + match[2];
+          if (match[3]) formatted += "-" + match[3];
+          e.target.value = formatted.trim();
+        } else {
+          e.target.value = raw;
+        }
+      });
+
+      // Saat tombol "Cek Pajak" ditekan
+      cekBtn.addEventListener("click", async function () {
+        const nopol = vehicleInput.value.trim().toUpperCase();
+        const warningMsg = document.getElementById("tax-warning");
+        const thanksMsg = document.getElementById("tax-thanks");
+
+        // Reset pesan
+        warningMsg.classList.add("hidden");
+        thanksMsg.classList.add("hidden");
+
+        if (nopol === "PEJAKI") {
+          alert("Tidak perlu cek pajak untuk pejalan kaki.");
+          return;
+        }
+
+        if (!/^([A-Z]{1,2})-(\d{1,4})(-[A-Z]{1,3})?$/.test(nopol)) {
+          alert("Format nomor polisi tidak valid. Contoh: B-1234-CD");
+          return;
+        }
+
+        spinner.classList.remove("hidden");
+
+        try {
+          const res = await fetch("https://ceknopol.sukipli.work/cari_kendaraan", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nopol })
+          });
+
+          const data = await res.json();
+
+          if (data.status === "LUNAS") {
+            taxPaid.checked = true;
+            thanksMsg.classList.remove("hidden");
+            console.log(data.status)
+          } else {
+            taxPaid.checked = false;
+            taxUnpaid.checked = true;
+            warningMsg.classList.remove("hidden");
+            console.log(data.status)
+          }
+
+        } catch (err) {
+          alert("Gagal memeriksa status pajak.");
+          console.error(err);
+        } finally {
+          spinner.classList.add("hidden");
+        }
+      });
+
+
+      // Validasi akhir sebelum submit
+      document.getElementById("surveyForm").addEventListener("submit", function (e) {
+        const value = vehicleInput.value.trim().toUpperCase();
+        const isValid = value === "PEJAKI" || /^([A-Z]{1,2})-(\d{1,4})(-[A-Z]{1,3})?$/.test(value);
+
+        if (!isValid) {
+          e.preventDefault();
+          alert("Format nomor polisi tidak valid.\nContoh: B-1234-CD atau A-88-BBC");
+          vehicleInput.focus();
+        }
+      });
+    });
+  </script>
+
+
+  <script>
+
+    // Tampilkan peringatan pajak
+    document.getElementById('tax-unpaid').addEventListener('change', function () {
+      if (this.checked) {
+        document.getElementById('tax-warning').style.display = 'block';
+      }
+    });
+
+    document.getElementById('tax-paid').addEventListener('change', function () {
+      if (this.checked) {
+        document.getElementById('tax-warning').style.display = 'none';
+      }
+    });
+
+    // Tampilkan komentar untuk pertanyaan 9 dan 10
+    document.getElementById('q9').addEventListener('change', function () {
+      const q9Comment = document.getElementById('q9-comment');
+      if (this.value === 'Kurang Memuaskan' || this.value === 'Tidak Memuaskan') {
+        q9Comment.classList.remove('hidden');
+      } else {
+        q9Comment.classList.add('hidden');
+      }
+    });
+
+    document.getElementById('q10').addEventListener('change', function () {
+      const q10Comment = document.getElementById('q10-comment');
+      if (this.value === 'Kurang Memuaskan' || this.value === 'Tidak Memuaskan') {
+        q10Comment.classList.remove('hidden');
+      } else {
+        q10Comment.classList.add('hidden');
+      }
+    });
+
+    // Inisialisasi Select2
+    $(document).ready(function () {
+      const dataBali = [
+        {
+          "text": "Kabupaten Badung",
+          "children": [
+            { "id": "BAD-Kuta", "text": "Kuta", "kabupaten": "Badung" },
+            { "id": "BAD-Kuta Selatan", "text": "Kuta Selatan", "kabupaten": "Badung" },
+            { "id": "BAD-Kuta Utara", "text": "Kuta Utara", "kabupaten": "Badung" },
+            { "id": "BAD-Mengwi", "text": "Mengwi", "kabupaten": "Badung" },
+            { "id": "BAD-Abiansemal", "text": "Abiansemal", "kabupaten": "Badung" },
+            { "id": "BAD-Petang", "text": "Petang", "kabupaten": "Badung" }
+          ]
+        },
+        {
+          "text": "Kabupaten Bangli",
+          "children": [
+            { "id": "BAN-Bangli", "text": "Bangli", "kabupaten": "Bangli" },
+            { "id": "BAN-Kintamani", "text": "Kintamani", "kabupaten": "Bangli" },
+            { "id": "BAN-Susut", "text": "Susut", "kabupaten": "Bangli" },
+            { "id": "BAN-Tembuku", "text": "Tembuku", "kabupaten": "Bangli" }
+          ]
+        },
+        {
+          "text": "Kabupaten Buleleng",
+          "children": [
+            { "id": "BUL-Banjar", "text": "Banjar", "kabupaten": "Buleleng" },
+            { "id": "BUL-Buleleng", "text": "Buleleng", "kabupaten": "Buleleng" },
+            { "id": "BUL-Busungbiu", "text": "Busungbiu", "kabupaten": "Buleleng" },
+            { "id": "BUL-Gerokgak", "text": "Gerokgak", "kabupaten": "Buleleng" },
+            { "id": "BUL-Kubutambahan", "text": "Kubutambahan", "kabupaten": "Buleleng" },
+            { "id": "BUL-Sawan", "text": "Sawan", "kabupaten": "Buleleng" },
+            { "id": "BUL-Seririt", "text": "Seririt", "kabupaten": "Buleleng" },
+            { "id": "BUL-Sukasada", "text": "Sukasada", "kabupaten": "Buleleng" },
+            { "id": "BUL-Tejakula", "text": "Tejakula", "kabupaten": "Buleleng" }
+          ]
+        },
+        {
+          "text": "Kabupaten Gianyar",
+          "children": [
+            { "id": "GIA-Blahbatuh", "text": "Blahbatuh", "kabupaten": "Gianyar" },
+            { "id": "GIA-Gianyar", "text": "Gianyar", "kabupaten": "Gianyar" },
+            { "id": "GIA-Payangan", "text": "Payangan", "kabupaten": "Gianyar" },
+            { "id": "GIA-Sukawati", "text": "Sukawati", "kabupaten": "Gianyar" },
+            { "id": "GIA-Tampaksiring", "text": "Tampaksiring", "kabupaten": "Gianyar" },
+            { "id": "GIA-Tegalallang", "text": "Tegalallang", "kabupaten": "Gianyar" },
+            { "id": "GIA-Ubud", "text": "Ubud", "kabupaten": "Gianyar" }
+          ]
+        },
+        {
+          "text": "Kabupaten Jembrana",
+          "children": [
+            { "id": "JEM-Jembrana", "text": "Jembrana", "kabupaten": "Jembrana" },
+            { "id": "JEM-Melaya", "text": "Melaya", "kabupaten": "Jembrana" },
+            { "id": "JEM-Mendoyo", "text": "Mendoyo", "kabupaten": "Jembrana" },
+            { "id": "JEM-Negara", "text": "Negara", "kabupaten": "Jembrana" },
+            { "id": "JEM-Pekutatan", "text": "Pekutatan", "kabupaten": "Jembrana" }
+          ]
+        },
+        {
+          "text": "Kabupaten Karangasem",
+          "children": [
+            { "id": "KAR-Abang", "text": "Abang", "kabupaten": "Karangasem" },
+            { "id": "KAR-Bebandem", "text": "Bebandem", "kabupaten": "Karangasem" },
+            { "id": "KAR-Karangasem", "text": "Karangasem", "kabupaten": "Karangasem" },
+            { "id": "KAR-Kubu", "text": "Kubu", "kabupaten": "Karangasem" },
+            { "id": "KAR-Manggis", "text": "Manggis", "kabupaten": "Karangasem" },
+            { "id": "KAR-Rendang", "text": "Rendang", "kabupaten": "Karangasem" },
+            { "id": "KAR-Selat", "text": "Selat", "kabupaten": "Karangasem" },
+            { "id": "KAR-Sidemen", "text": "Sidemen", "kabupaten": "Karangasem" }
+          ]
+        },
+        {
+          "text": "Kabupaten Klungkung",
+          "children": [
+            { "id": "KLU-Banjarangkan", "text": "Banjarangkan", "kabupaten": "Klungkung" },
+            { "id": "KLU-Dawan", "text": "Dawan", "kabupaten": "Klungkung" },
+            { "id": "KLU-Klungkung", "text": "Klungkung", "kabupaten": "Klungkung" },
+            { "id": "KLU-Nusa Penida", "text": "Nusa Penida", "kabupaten": "Klungkung" }
+          ]
+        },
+        {
+          "text": "Kabupaten Tabanan",
+          "children": [
+            { "id": "TAB-Baturiti", "text": "Baturiti", "kabupaten": "Tabanan" },
+            { "id": "TAB-Kediri", "text": "Kediri", "kabupaten": "Tabanan" },
+            { "id": "TAB-Kerambitan", "text": "Kerambitan", "kabupaten": "Tabanan" },
+            { "id": "TAB-Marga", "text": "Marga", "kabupaten": "Tabanan" },
+            { "id": "TAB-Penebel", "text": "Penebel", "kabupaten": "Tabanan" },
+            { "id": "TAB-Pupuan", "text": "Pupuan", "kabupaten": "Tabanan" },
+            { "id": "TAB-Selemadeg", "text": "Selemadeg", "kabupaten": "Tabanan" },
+            { "id": "TAB-Selemadeg Barat", "text": "Selemadeg Barat", "kabupaten": "Tabanan" },
+            { "id": "TAB-Selemadeg Timur", "text": "Selemadeg Timur", "kabupaten": "Tabanan" }
+          ]
+        },
+        {
+          "text": "Kota Denpasar",
+          "children": [
+            { "id": "DEN-Denpasar Barat", "text": "Denpasar Barat", "kabupaten": "Denpasar" },
+            { "id": "DEN-Denpasar Selatan", "text": "Denpasar Selatan", "kabupaten": "Denpasar" },
+            { "id": "DEN-Denpasar Timur", "text": "Denpasar Timur", "kabupaten": "Denpasar" },
+            { "id": "DEN-Denpasar Utara", "text": "Denpasar Utara", "kabupaten": "Denpasar" }
+          ]
+        }
+      ];
+      $('#kecamatan-select').select2({
+        placeholder: "Pilih Kecamatan",
+        data: dataBali,
+        allowClear: true,
+        containerCssClass: 'text-sm', // Menambahkan kelas pada kontainer Select2
+        dropdownCssClass: 'text-sm'
+      });
+      $('#kecamatan-select').on('change', function () {
+        const selected = $('#kecamatan-select').select2('data')[0];
+
+        // Update input hidden
+        $('#input-kecamatan').val(selected.text);
+        $('#input-kabupaten').val(selected.kabupaten);
+      });
+      // Data rumah sakit
+      const hospitals = [
+        {
+          "Rumah Sakit": "RSUP Prof Dr IGNG Ngoerah Denpasar",
+          "Kabupaten": "Kota Denpasar",
+          "Telepon": "(0361) 227911",
+          "Alamat": "Jl. Diponegoro, Dauh Puri Klod, Kec. Denpasar Bar., Kota Denpasar, Bali 80113"
+        },
+        {
+          "Rumah Sakit": "RS Mata Bali Mandara",
+          "Kabupaten": "Kota Denpasar",
+          "Telepon": "0361243350",
+          "Alamat": "Jl. Angsoka No. 08, Denpasar"
+        },
+        {
+          "Rumah Sakit": "RSUD Wangaya Kota Denpasar",
+          "Kabupaten": "Kota Denpasar",
+          "Telepon": "0361222487",
+          "Alamat": "Jl. Kartini No. 133, Denpasar"
+        },
+        {
+          "Rumah Sakit": "Rumkit Tk. II Udayana",
+          "Kabupaten": "Kota Denpasar",
+          "Telepon": "0361228068",
+          "Alamat": "Jl. P.B. Sudirman No.1 Dauh Puri, Denpasar, Bali"
+        },
+        {
+          "Rumah Sakit": "RS Bhayangkara Denpasar",
+          "Kabupaten": "Kota Denpasar",
+          "Telepon": "(0361) 234670",
+          "Alamat": "Jl. Trijata No.32, Sumerta Kelod, Denpasar Utara, Denpasar City, Bali 80233"
+        },
+        {
+          "Rumah Sakit": "RSUD Bali Mandara Provinsi Bali",
+          "Kabupaten": "Kota Denpasar",
+          "Telepon": "0361-4490566",
+          "Alamat": "Jalan Bypass Ngurah Rai Nomor 548 Denpasar, Desa Sanur Kauh, Kecamatan Denpasar Selatan, 80227"
+        },
+        {
+          "Rumah Sakit": "RSU Bhakti Rahayu Denpasar",
+          "Kabupaten": "Kota Denpasar",
+          "Telepon": "0361-430270",
+          "Alamat": "Jl. Gatot Subroto II No 11"
+        },
+        {
+          "Rumah Sakit": "RSU Surya Husadha",
+          "Kabupaten": "Kota Denpasar",
+          "Telepon": "0361-233787",
+          "Alamat": "Jl. P. Serangan no.07 Denpasar-Bali"
+        },
+        {
+          "Rumah Sakit": "RSU Dharma Yadnya",
+          "Kabupaten": "Kota Denpasar",
+          "Telepon": "0361-462488",
+          "Alamat": "Jalan WR Supratman No.256, Tohpati, Kesiman Kertalangu, Kecamatan Denpasar Timur, Kota Denpasar"
+        },
+        {
+          "Rumah Sakit": "RSIA Harapan Bunda",
+          "Kabupaten": "Kota Denpasar",
+          "Telepon": "0361-265533",
+          "Alamat": "Jalan Tukad Unda No. 1 Denpasar"
+        },
+        {
+          "Rumah Sakit": "RSU Kasih Ibu Denpasar",
+          "Kabupaten": "Kota Denpasar",
+          "Telepon": "0361 3003030",
+          "Alamat": "Jl. Teuku Umar No. 120 Dauh Puri Kauh, Kec. Denpasar Barat, Kota Denpasar. Bali"
+        },
+        {
+          "Rumah Sakit": "RSU Puri Raharja",
+          "Kabupaten": "Kota Denpasar",
+          "Telepon": "0361 222013",
+          "Alamat": "JL. WR. Supratman No 14 & 19"
+        },
+        {
+          "Rumah Sakit": "RSU Prima Medika",
+          "Kabupaten": "Kota Denpasar",
+          "Telepon": "(0361) 232434",
+          "Alamat": "Jl. Raya Sesetan No.10, Denpasar"
+        },
+        {
+          "Rumah Sakit": "RSIA Puri Bunda",
+          "Kabupaten": "Kota Denpasar",
+          "Telepon": "0361-4379999",
+          "Alamat": "Jl. Gatot Subroto VI No.19, Dauh Puri Kaja, Kec. Denpasar Utara, Kota Denpasar, Bali 80233"
+        },
+        {
+          "Rumah Sakit": "RSU BaliMed Denpasar",
+          "Kabupaten": "Kota Denpasar",
+          "Telepon": "0361484748",
+          "Alamat": "Jl. Mahendradatta 57X Denpasar"
+        },
+        {
+          "Rumah Sakit": "RSU Surya Husadha Ubung",
+          "Kabupaten": "Kota Denpasar",
+          "Telepon": "0361-425744",
+          "Alamat": "Jl. Cokroaminoto No.356 Ubung, Denpasar"
+        },
+        {
+          "Rumah Sakit": "RSGM Saraswati Denpasar",
+          "Kabupaten": "Kota Denpasar",
+          "Telepon": "(0361) 4747890",
+          "Alamat": "Jln. Kamboja No. 11 A Denpasar, 80233"
+        },
+        {
+          "Rumah Sakit": "RSU Bali Royal",
+          "Kabupaten": "Kota Denpasar",
+          "Telepon": "0361-222588",
+          "Alamat": "Jl. Tantular No. 6 Renon, Denpasar - Bali"
+        },
+        {
+          "Rumah Sakit": "RSK Ibu & Anak Pucuk Permata Hati",
+          "Kabupaten": "Kota Denpasar",
+          "Telepon": "0361-486579",
+          "Alamat": "Jalan Teuku Umar Barat No. 71XX Denpasar"
+        },
+        {
+          "Rumah Sakit": "RS Mata Ramata",
+          "Kabupaten": "Kota Denpasar",
+          "Telepon": "0361-9069009",
+          "Alamat": "Jl. Gatot Subroto Barat No.429, Padangsambian Kaja, Kec. Denpasar Bar., Kota Denpasar, Bali 80117"
+        },
+        {
+          "Rumah Sakit": "RSD Mangusada",
+          "Kabupaten": "Kabupaten Badung",
+          "Telepon": "087850127333",
+          "Alamat": "Jalan Raya Kapal, Mengwi, Badung, Indonesia, Bali"
+        },
+        {
+          "Rumah Sakit": "RSU Kasih Ibu Kedonganan",
+          "Kabupaten": "Kabupaten Badung",
+          "Telepon": "03613003030",
+          "Alamat": "Jalan Raya Uluwatu No 69A Kedonganan Kuta"
+        },
+        {
+          "Rumah Sakit": "RSKB BIMC Kuta",
+          "Kabupaten": "Kabupaten Badung",
+          "Telepon": "0361-761263",
+          "Alamat": "Jl. Bypass Ngurah Rai No.100X, Kuta, Kec. Kuta, Kabupaten Badung, Bali 80361"
+        },
+        {
+          "Rumah Sakit": "RSKB BIMC Nusa Dua",
+          "Kabupaten": "Kabupaten Badung",
+          "Telepon": "0361-3000911",
+          "Alamat": "Kawasan ITDC Blok D, Jl. Nusa Dua, Benoa, Kec. Kuta Sel., Kabupaten Badung, Bali 80363"
+        },
+        {
+          "Rumah Sakit": "RSU Siloam Bali",
+          "Kabupaten": "Kabupaten Badung",
+          "Telepon": "0361-779900",
+          "Alamat": "Jl. Sunset Road No.818, Kuta, Kec. Kuta, Kabupaten Badung, Bali 80361"
+        },
+        {
+          "Rumah Sakit": "RSU Surya Husadha Nusa Dua",
+          "Kabupaten": "Kabupaten Badung",
+          "Telepon": "0361 775827",
+          "Alamat": "Jalan Siligita Blok I No. 14 Nusa Dua"
+        },
+        {
+          "Rumah Sakit": "RSU Bali Jimbaran",
+          "Kabupaten": "Kabupaten Badung",
+          "Telepon": "0361 4725123",
+          "Alamat": "Jl. Raya Kampus Unud No.52, Jimbaran, Kec. Kuta Sel., Kabupaten Badung, Bali"
+        },
+        {
+          "Rumah Sakit": "RSU Garba Med Kerobokan",
+          "Kabupaten": "Kabupaten Badung",
+          "Telepon": "(0361) 9093584",
+          "Alamat": "Jl. Raya Kerobokan No.53, Lingkungan Jambe, Kerobokan Kaja, Kec. Kuta Utara, Kabupaten Badung, Bali 80361"
+        },
+        {
+          "Rumah Sakit": "Rumah Sakit Universitas Udayana",
+          "Kabupaten": "Kabupaten Badung",
+          "Telepon": "0361-8953670",
+          "Alamat": "Jl. Rumah Sakit Unud, Jimbaran, Kec. Kuta Sel., Kabupaten Badung, Bali 80361"
+        },
+        {
+          "Rumah Sakit": "Rumah Sakit Murni Teguh Tuban Bali",
+          "Kabupaten": "Kabupaten Badung",
+          "Telepon": "03612090700",
+          "Alamat": "Jl. Raya Tuban No. 1A/45, Kuta, Badung Bali, Indonesia - 80361"
+        },
+        {
+          "Rumah Sakit": "Rumah Sakit Umum Daerah Tabanan",
+          "Kabupaten": "Kabupaten Tabanan",
+          "Telepon": "0361-811027",
+          "Alamat": "Jalan pahlawan No. 14 Tabanan - Bali"
+        },
+        {
+          "Rumah Sakit": "RSU Wisma Prashanti",
+          "Kabupaten": "Kabupaten Tabanan",
+          "Telepon": "0361810555",
+          "Alamat": "Jalan Yeh Gangga No. 9 Tabanan, Bali"
+        },
+        {
+          "Rumah Sakit": "RS Dharma Kerti",
+          "Kabupaten": "Kabupaten Tabanan",
+          "Telepon": "0361811424",
+          "Alamat": "Jl. Teratai No 16 Dauh Pala Tabanan Bali, 82111"
+        },
+        {
+          "Rumah Sakit": "RSU Bhakti Rahayu Tabanan",
+          "Kabupaten": "Kabupaten Tabanan",
+          "Telepon": "0361810805",
+          "Alamat": "Jl.Batukaru No.2 Tabanan-Bali"
+        },
+        {
+          "Rumah Sakit": "RSU Kasih Ibu Tabanan",
+          "Kabupaten": "Kabupaten Tabanan",
+          "Telepon": "0361-3005757",
+          "Alamat": "Jl. Flamboyan No. 9, Tabanan"
+        },
+        {
+          "Rumah Sakit": "RSUD Singasana",
+          "Kabupaten": "Kabupaten Tabanan",
+          "Telepon": "0361-813495",
+          "Alamat": "Br. Tegal Antugan, Desa Nyitdah, Kecamatan Kediri, Kabupaten Tabanan"
+        },
+        {
+          "Rumah Sakit": "RSU Bali Holistik",
+          "Kabupaten": "Kabupaten Tabanan",
+          "Telepon": "(0361)8945458",
+          "Alamat": "Jalan Raya Umabian, Desa Belayu, Kecamatan Marga, Peken, Kabupaten Tabanan, Bali, 82181"
+        },
+        {
+          "Rumah Sakit": "RSIA Puri Bunda Tabanan",
+          "Kabupaten": "Kabupaten Tabanan",
+          "Telepon": "03612095888",
+          "Alamat": "Jl. Dr. Ir. Soekarno, Banjar Anyar, Kec. Kediri, Kabupaten Tabanan, Bali 82121"
+        },
+        {
+          "Rumah Sakit": "RSU Semara Ratih",
+          "Kabupaten": "Kabupaten Tabanan",
+          "Telepon": "0368 - 2301179",
+          "Alamat": "Jln. Denpasar - Singaraja, Desa Luwus, Kecamatanan Baturiti, Kabupaten Tabanan, Bali"
+        },
+        {
+          "Rumah Sakit": "RSIA Cahaya Bunda",
+          "Kabupaten": "Kabupaten Tabanan",
+          "Telepon": "0361-8941576",
+          "Alamat": "Jl. Ir. Soekarno No.88X Gerokgak Gede Delod Peken Tabanan"
+        },
+        {
+          "Rumah Sakit": "RSUD Negara",
+          "Kabupaten": "Kabupaten Jembrana",
+          "Telepon": "036541006",
+          "Alamat": "Jalan Wijaya Kusuma No 17 Negara"
+        },
+        {
+          "Rumah Sakit": "RSU Kertayasa",
+          "Kabupaten": "Kabupaten Jembrana",
+          "Telepon": "0365 41248",
+          "Alamat": "Jl. Ngurah Rai No. 143, Kelurahan Dauhwaru, Kecamatan Jembrana, Kabupaten Jembrana."
+        },
+        {
+          "Rumah Sakit": "RSU Bunda",
+          "Kabupaten": "Kabupaten Jembrana",
+          "Telepon": "0365 40251",
+          "Alamat": "Jalan Rajawali No.36, Kelurahan Pendem, Kec. Jembrana,Kab.Jembrana,Bali"
+        },
+        {
+          "Rumah Sakit": "RSU Bali Med Negara",
+          "Kabupaten": "Kabupaten Jembrana",
+          "Telepon": "(0365) 4501452",
+          "Alamat": "Jl. Hayam Wuruk No.23, Kel, Dangin Tukadaya, Kec. Jembrana, Kabupaten Jembrana, Bali 82218"
+        },
+        {
+          "Rumah Sakit": "RSUD Kab. Buleleng",
+          "Kabupaten": "Kabupaten Buleleng",
+          "Telepon": "036222046",
+          "Alamat": "Jalan Ngurah Rai No. 30 Singaraja"
+        },
+        {
+          "Rumah Sakit": "Rumkit Tk.IV Singaraja",
+          "Kabupaten": "Kabupaten Buleleng",
+          "Telepon": "-",
+          "Alamat": "Jl. Ngurah Rai No.70 Singaraja"
+        },
+        {
+          "Rumah Sakit": "RSU Kertha Usadha",
+          "Kabupaten": "Kabupaten Buleleng",
+          "Telepon": "036226277",
+          "Alamat": "Jln. Cendrawasih No. 5-7 Kaliuntu Kec. Buleleng Kab. Buleleng Bali"
+        },
+        {
+          "Rumah Sakit": "RSU Karya Dharma Husada",
+          "Kabupaten": "Kabupaten Buleleng",
+          "Telepon": "0362-21890",
+          "Alamat": "Jalan Yudistira Selatan No.7 Singaraja"
+        },
+        {
+          "Rumah Sakit": "RSU Parama Sidhi",
+          "Kabupaten": "Kabupaten Buleleng",
+          "Telepon": "036232701",
+          "Alamat": "Jalan Ahmad Yani No. 171 A, Baktiseraga, Singaraja, Buleleng - Bali"
+        },
+        {
+          "Rumah Sakit": "RSUD Tangguwisia",
+          "Kabupaten": "Kabupaten Buleleng",
+          "Telepon": "03623361387",
+          "Alamat": "Jalan Raya Seririt-Singaraja, Singaraja, Bali"
+        },
+        {
+          "Rumah Sakit": "RSUD Giri Emas",
+          "Kabupaten": "Kabupaten Buleleng",
+          "Telepon": "0362-3303884",
+          "Alamat": "Jln. Raya Singaraja -Amlapura Desa Giri Emas"
+        },
+        {
+          "Rumah Sakit": "RS BaliMed Buleleng",
+          "Kabupaten": "Kabupaten Buleleng",
+          "Telepon": "0362-3307788",
+          "Alamat": "Jln. Gunung Lempuyang, No.9x, Banjar Tegal, Buleleng, Bali"
+        },
+        {
+          "Rumah Sakit": "RSIA BUNDA Denpasar",
+          "Kabupaten": "Kota Denpasar",
+          "Telepon": "(0361)2093111",
+          "Alamat": "JI. Gatot Subroto Barat No. 455 X, Padangsambian Kaja, Oenpasar"
+        },
+        {
+          "Rumah Sakit": "Rumah Sakit Windu Husada",
+          "Kabupaten": "Kabupaten Badung",
+          "Telepon": "0361 8982888",
+          "Alamat": "Jl. Raya Mambal-Ubud, Mekar Bhuwana, Abiansemal, Badung, Bali"
+        },
+        {
+          "Rumah Sakit": "RSU Kenak Medika",
+          "Kabupaten": "Kabupaten Gianyar",
+          "Telepon": "03614791911",
+          "Alamat": "Jl Raya MAS, Ubud, Gianyar Regency, Bali 80571"
+        },
+        {
+          "Rumah Sakit": "RSUD Sanjiwani Gianyar",
+          "Kabupaten": "Kabupaten Gianyar",
+          "Telepon": "0361943020",
+          "Alamat": "Jln. Ciung Wanara No. 02 Gianyar"
+        },
+        {
+          "Rumah Sakit": "RS Ari Canti",
+          "Kabupaten": "Kabupaten Gianyar",
+          "Telepon": "(0361) 954573",
+          "Alamat": "Jl. Raya Mas, Ubud, Gianyar"
+        },
+        {
+          "Rumah Sakit": "RSU Ganesha",
+          "Kabupaten": "Kabupaten Gianyar",
+          "Telepon": "0361-4710066",
+          "Alamat": "Jl. Raya Celuk Sukawati, Gianyar"
+        },
+        {
+          "Rumah Sakit": "RSU Premagana",
+          "Kabupaten": "Kabupaten Gianyar",
+          "Telepon": "(0361) 8461955",
+          "Alamat": "Jl. Hyang Sangsi Jl. Raya Banjar Tubuh No.2, Batubulan, Kec. Sukawati, Kabupaten Gianyar, Bali 80582"
+        },
+        {
+          "Rumah Sakit": "RSUD PAYANGAN",
+          "Kabupaten": "Kabupaten Gianyar",
+          "Telepon": "0361-9088087",
+          "Alamat": "Jl. Raya Payangan, Melinggih, Kec. Payangan, Kabupaten Gianyar, Bali"
+        },
+        {
+          "Rumah Sakit": "RSU Famili Husada",
+          "Kabupaten": "Kabupaten Gianyar",
+          "Telepon": "(0361) 8493344",
+          "Alamat": "Jl. Astina Timur No.8A, Samplangan, Kec. Gianyar, Kabupaten Gianyar, Bali 80512"
+        },
+        {
+          "Rumah Sakit": "RSU Kasih Ibu Saba",
+          "Kabupaten": "Kabupaten Gianyar",
+          "Telepon": "03613003333",
+          "Alamat": "Jalan Raya Pantai Saba No 9"
+        },
+        {
+          "Rumah Sakit": "RSUD Klungkung",
+          "Kabupaten": "Kabupaten Klungkung",
+          "Telepon": "(0366)21172",
+          "Alamat": "jalan flamboyan nomor 40 klungkung"
+        },
+        {
+          "Rumah Sakit": "RSU Bintang",
+          "Kabupaten": "Kabupaten Klungkung",
+          "Telepon": "036625241",
+          "Alamat": "Jalan Ngurah Rai no.10 Kelurahan Semarapura Tengah, Kabupaten Klungkung, Provinsi Bali, Kode Pos 80711"
+        },
+        {
+          "Rumah Sakit": "RSU Permata Hati",
+          "Kabupaten": "Kabupaten Klungkung",
+          "Telepon": "0366-24777",
+          "Alamat": "Jalan Kecubung no.22, Klungkung - Bali"
+        },
+        {
+          "Rumah Sakit": "RSU Grha Bhakti Medika",
+          "Kabupaten": "Kabupaten Klungkung",
+          "Telepon": "03665584001",
+          "Alamat": "Jl. Prof. Dr. Ida Bagus Mantra No.99, Negari, Kec. Banjarangkan, Kabupaten Klungkung, Bali 80752"
+        },
+        {
+          "Rumah Sakit": "UPTD RSUD Gema Santi Nusa Penida",
+          "Kabupaten": "Kabupaten Klungkung",
+          "Telepon": "0366-5581160",
+          "Alamat": "Jl. Pendidikan, Banjar Nyuh, Desa Ped, Nusa Penida"
+        },
+        {
+          "Rumah Sakit": "RSUD Bangli",
+          "Kabupaten": "Kabupaten Bangli",
+          "Telepon": "(0366) 91521",
+          "Alamat": "Jl. Brigjen Ngurah Rai No.10, Kawan, Kec. Bangli, Kabupaten Bangli, Bali 80614"
+        },
+        {
+          "Rumah Sakit": "RS Jiwa Provinsi Bali",
+          "Kabupaten": "Kabupaten Bangli",
+          "Telepon": "0366 91073",
+          "Alamat": "Jalan Kesuma Yudha No 29"
+        },
+        {
+          "Rumah Sakit": "RSU Bangli Medika Canti",
+          "Kabupaten": "Kabupaten Bangli",
+          "Telepon": "0366-91555",
+          "Alamat": "Jl. Tirta Giri Kutri L.C. Subak Aya, Bangli"
+        },
+        {
+          "Rumah Sakit": "RSUD Karangasem",
+          "Kabupaten": "Kabupaten Karangasem",
+          "Telepon": "(0363) 21470",
+          "Alamat": "Jln. Ngurah Rai No. 58 Amlapura - Bali"
+        },
+        {
+          "Rumah Sakit": "RSU Balimed Karangasem",
+          "Kabupaten": "Kabupaten Karangasem",
+          "Telepon": "0363-4301618",
+          "Alamat": "Jl. Nenas, Kecicang, Kec. Bebandem, Kabupaten Karangasem, Bali 80811"
+        },
+        {
+          "Rumah Sakit": "RS Kubu Pratama",
+          "Kabupaten": "Kabupaten Karangasem",
+          "Telepon": "085337749208",
+          "Alamat": "Jalan Singaraja-Karangasem, Banjar Dinas Labuan Sari, Desa Tianyar Barat, Kecamatan Kubu, Kabupaten Karangasem"
+        }
+      ];
+      $('#hospital').select2({
+        data: hospitals.map(hospital => {
+          return {
+            id: hospital['Rumah Sakit'],
+            text: `${hospital['Rumah Sakit']} - ${hospital['Kabupaten']}`,
+            kabupaten: hospital['Kabupaten']
+          };
+        }),
+        placeholder: 'Pilih atau Cari Rumah Sakit',
+        allowClear: true,
+        containerCssClass: 'text-sm', // Menambahkan kelas pada kontainer Select2
+        dropdownCssClass: 'text-sm'
+      });
+
+      // Setel nilai kabupaten ketika rumah sakit dipilih
+      $('#hospital').on('change', function () {
+        const selectedHospital = hospitals.find(hospital => hospital['Rumah Sakit'] === $(this).val());
+        if (selectedHospital) {
+          document.getElementById('kabupaten').value = selectedHospital['Kabupaten'];
+        }
+      });
+    });
+
+    // Validasi form
+    document.getElementById('surveyForm').addEventListener('submit', function (e) {
+      // e.preventDefault();
+
+      // Reset semua pesan error
+      const errorMessages = document.querySelectorAll('.validation-message');
+      errorMessages.forEach(message => {
+        message.style.display = 'none';
+      });
+
+      let isValid = true;
+
+      // Validasi nama
+      if (document.getElementById('name').value.trim() === '') {
+        document.getElementById('name-error').style.display = 'block';
+        isValid = false;
+      }
+
+      // Validasi usia
+      if (document.getElementById('age').value.trim() === '') {
+        document.getElementById('age-error').style.display = 'block';
+        isValid = false;
+      }
+
+      // Validasi nomor HP
+      if (document.getElementById('phone').value.trim() === '') {
+        document.getElementById('phone-error').style.display = 'block';
+        isValid = false;
+      }
+
+      // Validasi tanggal kecelakaan
+      if (document.getElementById('accident-date').value.trim() === '') {
+        document.getElementById('date-error').style.display = 'block';
+        isValid = false;
+      }
+
+      // Validasi lokasi kecelakaan
+      if (document.getElementById('location').value.trim() === '') {
+        document.getElementById('location-error').style.display = 'block';
+        isValid = false;
+      }
+
+      // Validasi nomor polisi
+      if (document.getElementById('vehicle').value.trim() === '') {
+        document.getElementById('vehicle-error').style.display = 'block';
+        isValid = false;
+      }
+
+      // Validasi rumah sakit
+      if (!document.getElementById('hospital').value) {
+        document.getElementById('hospital-error').style.display = 'block';
+        isValid = false;
+      }
+
+      // Validasi pertanyaan 2
+      if (document.getElementById('q2').value === '') {
+        document.getElementById('q2-error').style.display = 'block';
+        isValid = false;
+      }
+
+      // Validasi pertanyaan 3
+      if (document.getElementById('q3').value === '') {
+        document.getElementById('q3-error').style.display = 'block';
+        isValid = false;
+      }
+
+      // Validasi pertanyaan 4
+      if (document.getElementById('q4').value === '') {
+        document.getElementById('q4-error').style.display = 'block';
+        isValid = false;
+      }
+
+      // Validasi pertanyaan 5
+      if (document.getElementById('q5').value === '') {
+        document.getElementById('q5-error').style.display = 'block';
+        isValid = false;
+      }
+
+      // Validasi pertanyaan 6
+      if (document.getElementById('q6').value === '') {
+        document.getElementById('q6-error').style.display = 'block';
+        isValid = false;
+      }
+
+      // Validasi pertanyaan 7
+      if (document.getElementById('q7').value === '') {
+        document.getElementById('q7-error').style.display = 'block';
+        isValid = false;
+      }
+
+      // Validasi pertanyaan 8
+      if (document.querySelectorAll('input[name="q8"]:checked').length === 0) {
+        document.getElementById('q8-error').style.display = 'block';
+        isValid = false;
+      }
+
+      // Validasi pertanyaan 9
+      if (document.getElementById('q9').value === '') {
+        document.getElementById('q9-error').style.display = 'block';
+        isValid = false;
+      }
+
+      // Validasi pertanyaan 10
+      if (document.getElementById('q10').value === '') {
+        document.getElementById('q10-error').style.display = 'block';
+        isValid = false;
+      }
+
+      // Validasi pernyataan
+      if (!document.getElementById('statement').checked) {
+        document.getElementById('statement-error').style.display = 'block';
+        isValid = false;
+      }
+
+      if (!document.getElementById('understanding').checked) {
+        document.getElementById('understanding-error').style.display = 'block';
+        isValid = false;
+      }
+
+      if (isValid) {
+        // Sembunyikan form dan tampilkan terima kasih
+        document.getElementById('surveyForm').style.display = 'none';
+        // document.getElementById('thankYou').classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="id" class="light">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard Survei Jasa Raharja</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Tailwind & Flowbite -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { overflow: hidden; }
+    .marquee {
+      white-space: nowrap;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+    .marquee span {
+      display: inline-block;
+      padding-left: 100%;
+      animation: marquee 30s linear infinite;
+    }
+    @keyframes marquee {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-100%, 0); }
+    }
+  </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 dark:text-white font-sans h-screen transition-colors duration-300">
+
+  <!-- Header -->
+  <div class="flex items-center justify-between px-6 py-4 border-b-4 border-blue-600 bg-white dark:bg-gray-800 dark:text-white">
+    <img src="{{ url_for('static', filename='icons/icon-192.png') }}" alt="Logo" class="h-14">
+    <h1 class="text-2xl md:text-4xl font-bold text-blue-500 dark:text-white text-center w-full">
+      Dashboard Survei Jendela Jasa Raharja
+    </h1>
+    <div class="flex items-center gap-2"> 
+      <button onclick="location.href='/laporan'" class="text-sm bg-green-200 hover:bg-green-300 dark:bg-green-700 dark:hover:bg-green-600 dark:text-white px-3 py-1 rounded">
+        🗒️
+      </button>
+      <!-- Tombol mode -->
+      <button onclick="toggleDarkMode()" class="text-sm bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white px-3 py-1 rounded">
+        🌗
+      </button>
+      <!-- Jam -->
+      <div id="clock" class="text-lg font-semibold text-gray-700 dark:text-white"></div>
+    </div>
+  </div>
+
+  <!-- Grid Atas: Statistik -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 px-6 py-4">
+    <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-4 text-center">
+      <div class="text-4xl font-bold text-blue-700 dark:text-white">{{ total_responses }}</div>
+      <div>Total Responden</div>
+    </div>
+    <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-4 text-center">
+      <div class="text-4xl font-bold text-blue-700 dark:text-white">{{ avg_age }}</div>
+      <div>Usia Rata-rata</div>
+    </div>
+    <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-4 text-center">
+      <div class="text-4xl font-bold text-blue-700 dark:text-white">{{ avg_satisfaction }}%</div>
+      <div>Skor Kepuasan</div>
+    </div>
+    <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-4 text-center">
+      <div class="text-xl font-semibold text-blue-700 dark:text-white">{{ response_rate }}</div>
+      <div>Terakhir Diisi</div>
+    </div>
+  </div>
+
+  <!-- Grid Bawah: Grafik -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 px-6 pb-4">
+    <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-4">
+      <h2 class="text-center font-semibold mb-2">Tingkat Kepuasan</h2>
+      <div class="h-60"><canvas id="satisfactionChart" class="w-full h-full"></canvas></div>
+    </div>
+    <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-4">
+      <h2 class="text-center font-semibold mb-2">Status Pajak Kendaraan</h2>
+      <div class="h-60"><canvas id="taxChart" class="w-full h-full"></canvas></div>
+    </div>
+    <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-4">
+      <h2 class="text-center font-semibold mb-2">Kabupaten Terbanyak</h2>
+      <div class="h-60"><canvas id="kabupatenChart" class="w-full h-full"></canvas></div>
+    </div>
+    <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-4">
+      <h2 class="text-center font-semibold mb-2">Rumah Sakit Terbanyak</h2>
+      <div class="h-60"><canvas id="hospitalChart" class="w-full h-full"></canvas></div>
+    </div>
+    <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-4 md:col-span-2">
+      <h2 class="text-center font-semibold mb-2">Tren Mingguan</h2>
+      <div class="h-60"><canvas id="trendChart" class="w-full h-full"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Ticker -->
+  {% if suggestions %}
+  <div class="bg-blue-100 dark:bg-gray-700 py-2 px-6 marquee text-lg font-medium text-blue-900 dark:text-white">
+    <span>
+      {% for s in suggestions %}
+        💬 "{{ s.text }}" — {{ s.date }} &nbsp;&nbsp;&nbsp;&nbsp;
+      {% endfor %}
+    </span>
+  </div>
+  {% endif %}
+
+  <!-- Scripts -->
+  <script>
+    // Jam Digital
+    function updateClock() {
+      const now = new Date();
+      const jam = now.getHours().toString().padStart(2, '0');
+      const menit = now.getMinutes().toString().padStart(2, '0');
+      const detik = now.getSeconds().toString().padStart(2, '0');
+      document.getElementById('clock').innerText = `${jam}:${menit}:${detik}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Mode Gelap
+    function toggleDarkMode() {
+      const html = document.documentElement;
+      html.classList.toggle('dark');
+      localStorage.setItem('mode', html.classList.contains('dark') ? 'dark' : 'light');
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      const mode = localStorage.getItem('mode');
+      if (mode === 'dark') document.documentElement.classList.add('dark');
+    });
+
+    // Auto-refresh tiap 60 detik
+    setTimeout(() => location.reload(), 60000);
+  </script>
+
+  <!-- Chart.js -->
+  <script>
+    const chartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true } }
+    };
+
+    new Chart(document.getElementById('satisfactionChart'), {
+      type: 'bar',
+      data: {
+        labels: {{ satisfaction_data.keys()|list|tojson }},
+        datasets: [{
+          data: {{ satisfaction_data.values()|list|tojson }},
+          backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444']
+        }]
+      },
+      options: chartOptions
+    });
+
+    new Chart(document.getElementById('taxChart'), {
+      type: 'pie',
+      data: {
+        labels: {{ tax_status_data.keys()|list|tojson }},
+        datasets: [{
+          data: {{ tax_status_data.values()|list|tojson }},
+          backgroundColor: ['#10b981', '#f87171']
+        }]
+      },
+      options: chartOptions
+    });
+
+    new Chart(document.getElementById('kabupatenChart'), {
+      type: 'bar',
+      data: {
+        labels: {{ kabupaten_data.keys()|list|tojson }},
+        datasets: [{
+          data: {{ kabupaten_data.values()|list|tojson }},
+          backgroundColor: '#6366f1'
+        }]
+      },
+      options: chartOptions
+    });
+
+    new Chart(document.getElementById('hospitalChart'), {
+      type: 'bar',
+      data: {
+        labels: {{ hospital_data.keys()|list|tojson }},
+        datasets: [{
+          data: {{ hospital_data.values()|list|tojson }},
+          backgroundColor: '#14b8a6'
+        }]
+      },
+      options: chartOptions
+    });
+
+    new Chart(document.getElementById('trendChart'), {
+      type: 'line',
+      data: {
+        labels: {{ trend_data|map(attribute=0)|list|tojson }},
+        datasets: [{
+          data: {{ trend_data|map(attribute=1)|list|tojson }},
+          borderColor: '#3b82f6',
+          tension: 0.4,
+          fill: false
+        }]
+      },
+      options: chartOptions
+    });
+  </script>
+</body>
+</html>

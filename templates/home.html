@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jendela Jasa Raharja</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Flowbite -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.16.4/flowbite.min.css">
+    <style>
+        .section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="max-w-4xl mx-auto">
+        <div class="px-4 mt-4">
+            <img src="/static/hero.webp" alt="Hero Jendela Jasa Raharja" class="rounded-xl w-full">
+        </div>
+        <div class="px-4 mt-6 text-center">
+            <h2 class="text-xl font-semibold mb-2">📋 Survei Jendela JR</h2>
+            <p class="text-gray-700 text-sm">Semoga Anda segera pulih dan sehat kembali. Sebelum meninggalkan rumah sakit, mohon bantu kami dengan mengisi survei singkat ini agar kami dapat terus meningkatkan pelayanan</p>
+        </div>
+        <div class="grid grid-cols-1 gap-4 mt-8 px-4">
+            <a href="/survey" class="bg-white shadow-md rounded-lg p-4 flex flex-col items-center justify-center hover:bg-blue-200 w-full transition">
+                <div class="text-3xl mb-2">📝</div>
+                <span class="text-sm font-medium text-gray-800">Isi Survei</span>
+            </a>
+        </div>
+        <div class="grid grid-cols-2 gap-4 mt-4 px-4">
+            <a href="javascript:void(0)" onclick="document.getElementById('aboutModal').classList.remove('hidden')" class="bg-white shadow-md rounded-lg p-4 flex flex-col items-center justify-center hover:bg-blue-200 transition">
+                <div class="text-3xl mb-2">ℹ️</div>
+                <span class="text-sm font-medium text-gray-800">Tentang Kami</span>
+            </a>
+            <a href="javascript:void(0)" onclick="document.getElementById('kontakModal').classList.remove('hidden')" class="bg-white shadow-md rounded-lg p-4 flex flex-col items-center justify-center hover:bg-blue-200 transition">
+                <div class="text-3xl mb-2">☎️</div>
+                <span class="text-sm font-medium text-gray-800">Kontak</span>
+            </a>
+        </div>
+        <footer class="text-center text-xs text-gray-500 mt-4 mb-2">© 2025 Jasa Raharja. All rights reserved.</footer>
+    </div>
+
+    <!-- About Modal -->
+    <div id="aboutModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center hidden">
+        <div class="bg-white rounded-lg p-6 w-96 shadow">
+            <h2 class="text-lg font-semibold mb-4">ℹ️ Tentang Kami</h2>
+            <p class="text-sm text-gray-700">Aplikasi <strong>Jendela Jasa Raharja</strong> 
+            adalah platform layanan informasi dan survei kepuasan korban kecelakaan, 
+            sebagai bentuk transparansi dan peningkatan mutu pelayanan kepada masyarakat. </p>
+            <button class="mt-4 bg-blue-600 hover:bg-blue-700 text-white p-2 rounded w-full" onclick="document.getElementById('aboutModal').classList.add('hidden')">Tutup</button>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div id="kontakModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center hidden">
+        <div class="bg-white rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow">
+          <h2 class="text-lg font-semibold mb-4">☎️ Kontak</h2>
+          <p class="text-sm text-gray-700">Hubungi kami melalui:</p>
+          <ul class="mt-2 list-disc list-inside text-sm text-gray-700 mb-4">
+            <li>Telepon: 1500 002</li>
+            <li>Email: <a href="mailto:info@jasaraharja.co.id" class="text-blue-600 hover:text-blue-800">info@jasaraharja.co.id</a></li>
+            <li>Website: <a href="https://jasaraharja.co.id" class="text-blue-600 hover:text-blue-800">jasaraharja.co.id</a></li>
+          </ul>
+      
+          <h3 class="text-md font-semibold mb-2 mt-4">📋 Daftar Kontak PIC RS</h3>
+          <div class="space-y-2">
+      
+            <!-- Contoh PIC -->
+            <details class="border text-sm border-gray-300 rounded">
+              <summary class="px-4 py-2 cursor-pointer bg-gray-100 hover:bg-gray-200">
+                <strong>A.A Ngurah Dhani Wijaya</strong> – 2 RS – Wilayah: GIANYAR – 📞 081339752647
+              </summary>
+              <ul class="px-6 py-2 list-disc text-sm text-gray-700">
+                <li class="mb-2">
+                  <strong>RS. PREMAGANA KAB. GIANYAR</strong><br>
+                  Wilayah: GIANYAR<br>
+                  Alamat: Jl. Hyang Sangsi No.2, Batubulan, Kec. Sukawati, Gianyar
+                </li>
+                <li class="mb-2">
+                  <strong>RS SANJIWANI</strong><br>
+                  Wilayah: GIANYAR<br>
+                  Alamat: Jl. Ciung Wanara No.2, Gianyar
+                </li>
+              </ul>
+            </details>
+      
+            <details class="border text-sm border-gray-300 rounded">
+              <summary class="px-4 py-2 cursor-pointer bg-gray-100 hover:bg-gray-200">
+                <strong>Dwi Deodatus P Napitu</strong> – 2 RS – Wilayah: TABANAN – 📞 081210695455
+              </summary>
+              <ul class="px-6 py-2 list-disc text-sm text-gray-700">
+                <li class="mb-2">
+                  <strong>RSUD KAB. TABANAN</strong><br>
+                  Wilayah: TABANAN<br>
+                  Alamat: Jl. Pahlawan No.14, Delod Peken, Kec. Tabanan, Tabanan
+                </li>
+                <li class="mb-2">
+                  <strong>RS NYITDAH/RSUD SINGASANA TABANAN</strong><br>
+                  Wilayah: TABANAN<br>
+                  Alamat: Banjar Tegal Antugan Ds. Nyitdah Kecamatan Kediri, Tabanan
+                </li>
+              </ul>
+            </details>
+      
+            <details class="border text-sm border-gray-300 rounded">
+              <summary class="px-4 py-2 cursor-pointer bg-gray-100 hover:bg-gray-200">
+                <strong>Gede Sudarmawan</strong> – 4 RS – Wilayah: BULELENG – 📞 081238721731
+              </summary>
+              <ul class="px-6 py-2 list-disc text-sm text-gray-700">
+                <li class="mb-2">
+                  <strong>RS KERTHA USADA KAB. BULELENG</strong><br>
+                  Wilayah: BULELENG<br>
+                  Alamat: Jl. Gajah Mada No.138, Buleleng
+                </li>
+                <li class="mb-2">
+                  <strong>RSUD PRATAMA GEROKGAK</strong><br>
+                  Wilayah: BULELENG<br>
+                  Alamat: Desa Gerokgak, Buleleng
+                </li>
+                <li class="mb-2">
+                  <strong>RS PRATAMA KUBUTAMBAHAN</strong><br>
+                  Wilayah: BULELENG<br>
+                  Alamat: Desa Kubutambahan, Buleleng
+                </li>
+                <li class="mb-2">
+                  <strong>RSUD BULELENG</strong><br>
+                  Wilayah: BULELENG<br>
+                  Alamat: Jl. Ngurah Rai No.10, Singaraja, Buleleng
+                </li>
+              </ul>
+            </details>
+      
+            <details class="border text-sm border-gray-300 rounded">
+              <summary class="px-4 py-2 cursor-pointer bg-gray-100 hover:bg-gray-200">
+                <strong>Hafii Risalam</strong> – 4 RS – Wilayah: BULELENG, KARANGASEM – 📞 087830279494
+              </summary>
+              <ul class="px-6 py-2 list-disc text-sm text-gray-700">
+                <li class="mb-2">
+                  <strong>RS. KASNA MEDIKA</strong><br>
+                  Wilayah: BULELENG<br>
+                  Alamat: Jl. Raya Seririt – Singaraja
+                </li>
+                <li class="mb-2">
+                  <strong>RSUD SINGARAJA KAB. BULELENG</strong><br>
+                  Wilayah: BULELENG<br>
+                  Alamat: Jl. Surapati No.12, Singaraja
+                </li>
+                <li class="mb-2">
+                  <strong>RS PRATAMA KARANGASEM</strong><br>
+                  Wilayah: KARANGASEM<br>
+                  Alamat: Jl. Veteran, Karangasem
+                </li>
+                <li class="mb-2">
+                  <strong>RSUD KARANGASEM</strong><br>
+                  Wilayah: KARANGASEM<br>
+                  Alamat: Jl. Gajah Mada No.1, Amlapura, Karangasem
+                </li>
+              </ul>
+            </details>
+            <details class="border text-sm border-gray-300 rounded">
+                <summary class="px-4 py-2 cursor-pointer bg-gray-100 hover:bg-gray-200">
+                  <strong>Hafii Risalam</strong> – 4 RS – Wilayah: BULELENG, KARANGASEM – 📞 087830279494
+                </summary>
+                <ul class="px-6 py-2 list-disc text-sm text-gray-700">
+                  <li class="mb-2">
+                    <strong>RS. KASNA MEDIKA</strong><br>
+                    Wilayah: KARANGASEM<br>
+                    Alamat: Jl. Tejakula - Tianyar, Tianyar Bar., Kec. Kubu, Kabupaten Karangasem, Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>RSUD SINGARAJA KAB. BULELENG</strong><br>
+                    Wilayah: BULELENG<br>
+                    Alamat: Jl. Ngurah Rai No. 30 Singaraja
+                  </li>
+                  <li class="mb-2">
+                    <strong>RS TNI AD TK.IV SINGARAJA KAB. BULELENG</strong><br>
+                    Wilayah: BULELENG<br>
+                    Alamat: Jl. Ngurah Rai No. 70 Singaraja
+                  </li>
+                  <li class="mb-2">
+                    <strong>RS PARAMA SIDHI KAB. BULELENG</strong><br>
+                    Wilayah: BULELENG<br>
+                    Alamat: Jalan Ahmad Yani No. 171 Singaraja
+                  </li>
+                </ul>
+              </details>
+              
+              <details class="border text-sm border-gray-300 rounded">
+                <summary class="px-4 py-2 cursor-pointer bg-gray-100 hover:bg-gray-200">
+                  <strong>I Kadek Ardika</strong> – 5 RS – Wilayah: BADUNG, DENPASAR – 📞 081805655294
+                </summary>
+                <ul class="px-6 py-2 list-disc text-sm text-gray-700">
+                  <li class="mb-2">
+                    <strong>RS BHAKTI RAHAYU KOTA DENPASAR</strong><br>
+                    Wilayah: DENPASAR<br>
+                    Alamat: Jl. Gatot Subroto II No.11, Dangin Puri Kaja, Kec. Denpasar Utara, Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>RS BALIMED KOTA DENPASAR</strong><br>
+                    Wilayah: DENPASAR<br>
+                    Alamat: Jl. Mahendradatta No.57 X, Padangsambian, Kec. Denpasar Barat, Denpasar, Bal
+                  </li>
+                  <li class="mb-2">
+                    <strong>BIC CLINIC/RSIA BUNDA DENPASAR</strong><br>
+                    Wilayah: DENPASAR<br>
+                    Alamat: Jl. Gatot Subroto Barat No.455x, Padangsambian Kaja, Kec. Denpasar Barat Kota Denpasar, Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>RS MATA RAMATA</strong><br>
+                    Wilayah: DENPASAR<br>
+                    Alamat: Jl. Gatot Subroto Barat No.429 Denpasar
+                  </li>
+                  <li class="mb-2">
+                    <strong>RS GARBA MED</strong><br>
+                    Wilayah: BADUNG<br>
+                    Alamat: Raya Kerobokan No.53, Lingkungan Jambe, Kerobokan Kaja, Kec. Kuta Utara, Kabupaten Badung
+                  </li>
+                </ul>
+              </details>
+              
+              <details class="border text-sm border-gray-300 rounded">
+                <summary class="px-4 py-2 cursor-pointer bg-gray-100 hover:bg-gray-200">
+                  <strong>I Ketut Kusuma Yogi</strong> – 4 RS – Wilayah: JEMBRANA – 📞 081805368497
+                </summary>
+                <ul class="px-6 py-2 list-disc text-sm text-gray-700">
+                  <li class="mb-2">
+                    <strong>RSUD NEGARA KAB. JEMBRANA</strong><br>
+                    Wilayah: JEMBRANA<br>
+                    Alamat: Jl. Wijaya Kusuma No. 17, Negara
+                  </li>
+                  <li class="mb-2">
+                    <strong>RSU BUNDA NEGARA</strong><br>
+                    Wilayah: JEMBRANA<br>
+                    Alamat: Jl. Rajawali No. 36 Negara
+                  </li>
+                  <li class="mb-2">
+                    <strong>RS BALIMED NEGARA</strong><br>
+                    Wilayah: JEMBRANA<br>
+                    Alamat: Jl. Hayam Wuruk No. 23 Negara
+                  </li>
+                  <li class="mb-2">
+                    <strong>RSU KERTAYASA NEGARA</strong><br>
+                    Wilayah: JEMBRANA<br>
+                    Alamat: Jl. Ngurah Rai No. 143 Negara
+                  </li>
+                </ul>
+              </details>
+              
+              <details class="border text-sm border-gray-300 rounded">
+                <summary class="px-4 py-2 cursor-pointer bg-gray-100 hover:bg-gray-200">
+                  <strong>I Nyoman Eggy Tri Chandakala</strong> – 3 RS – Wilayah: BADUNG – 📞 085737144164
+                </summary>
+                <ul class="px-6 py-2 list-disc text-sm text-gray-700">
+                  <li class="mb-2">
+                    <strong>RS BALI JIMBARAN KAB. BADUNG</strong><br>
+                    Wilayah: BADUNG<br>
+                    Alamat: Jl. Raya Kampus Unud No.52, Jimbaran, Kec. Kuta Selatan, Badung, Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>RS.UNIV.UDAYANA KAB.BADUNG</strong><br>
+                    Wilayah: BADUNG<br>
+                    Alamat: Jl. Rumah Sakit Unud, Jimbaran, Kec. Kuta Selatan, Kabupaten Badung, Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>RS.BIMC NUSA DUA BADUNG</strong><br>
+                    Wilayah: BADUNG<br>
+                    Alamat: Kawasan ITDC Blok D, Jl. Nusa Dua, Benoa, Kec. Kuta Sel., Kab. Badung, Bali
+                  </li>
+                </ul>
+              </details>
+              
+              <details class="border text-sm border-gray-300 rounded">
+                <summary class="px-4 py-2 cursor-pointer bg-gray-100 hover:bg-gray-200">
+                  <strong>I Putu Mardi Kusuma</strong> – 4 RS – Wilayah: TABANAN – 📞 081239600518
+                </summary>
+                <ul class="px-6 py-2 list-disc text-sm text-gray-700">
+                  <li class="mb-2">
+                    <strong>RS DHARMA KERTI KAB. TABANAN</strong><br>
+                    Wilayah: TABANAN<br>
+                    Alamat: Jl. Teratai No.16, Dauh Peken, Kec. Tabanan, Kabupaten Tabanan, Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>RS KASIH IBU KAB. TABANAN</strong><br>
+                    Wilayah: TABANAN<br>
+                    Alamat: Jl. Flamboyan No. 9, Kampung Kodok, Dauh Peken, Kabupaten Tabanan, Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>RS WISMA PRASHANTI KAB. TABANAN</strong><br>
+                    Wilayah: TABANAN<br>
+                    Alamat: Jl. Yeh Gangga I No.9, Gubug, Kec. Tabanan, Kabupaten Tabanan, Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>RS BHAKTI RAHAYU KAB. TABANAN</strong><br>
+                    Wilayah: TABANAN<br>
+                    Alamat: Jl. Batukaru No.2, Denbantas, Kec. Tabanan, Kabupaten Tabanan, Bali
+                  </li>
+                </ul>
+              </details>
+              <details class="border text-sm border-gray-300 rounded">
+                <summary class="px-4 py-2 cursor-pointer bg-gray-100 hover:bg-gray-200">
+                  <strong>I Wayan Mertayasa</strong> – 2 RS – Wilayah: KARANGASEM – 📞 085333087088
+                </summary>
+                <ul class="px-6 py-2 list-disc text-sm text-gray-700">
+                  <li class="mb-2">
+                    <strong>RS BALIMED KAB. KARANGASEM</strong><br>
+                    Wilayah: KARANGASEM<br>
+                    Alamat: Jl.Nenas Bungaya Kangin Kecicang Bebandem Karangasem
+                  </li>
+                  <li class="mb-2">
+                    <strong>RSUD KAB. KARANGASEM</strong><br>
+                    Wilayah: KARANGASEM<br>
+                    Alamat: Jl. Ngurah Rai Karangasem
+                  </li>
+                </ul>
+              </details>
+              
+              <details class="border text-sm border-gray-300 rounded">
+                <summary class="px-4 py-2 cursor-pointer bg-gray-100 hover:bg-gray-200">
+                  <strong>IGA Bagus Indra Kusuma</strong> – 5 RS – Wilayah: BADUNG, DENPASAR – 📞 081805391591
+                </summary>
+                <ul class="px-6 py-2 list-disc text-sm text-gray-700">
+                  <li class="mb-2">
+                    <strong>RS MURNI TEGUH TUBAN BADUNG</strong><br>
+                    Wilayah: DENPASAR<br>
+                    Alamat: Jl. Raya Tuban No.1A/45, Tuban, Kuta, Kabupaten Badung, Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>RS SILOAM BALI KAB. BADUNG</strong><br>
+                    Wilayah: BADUNG<br>
+                    Alamat: Jl. Sunset Road No.818, Kuta, Kabupaten Badung, Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>RS SURYA HUSADHA NUSADUA KAB. BADUNG</strong><br>
+                    Wilayah: BADUNG<br>
+                    Alamat: Jl. Nusa Dua No.14, Benoa, Kec. Kuta Selatan, Kabupaten Badung, Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>RS KASIH IBU KEDONGANAN KAB. BADUNG</strong><br>
+                    Wilayah: BADUNG<br>
+                    Alamat: Jl. Uluwatu St No.69 A, Kedonganan, Kuta, Kabupaten Badung, Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>RS.BIMC KUTA BADUNG</strong><br>
+                    Wilayah: BADUNG<br>
+                    Alamat: Jl. Bypass Ngurah Rai No.100X, Kuta, Kabupaten Badung, Bali
+                  </li>
+                </ul>
+              </details>
+              
+              <details class="border text-sm border-gray-300 rounded">
+                <summary class="px-4 py-2 cursor-pointer bg-gray-100 hover:bg-gray-200">
+                  <strong>IGA Gergita Sastra</strong> – 3 RS – Wilayah: GIANYAR – 📞 081239857836
+                </summary>
+                <ul class="px-6 py-2 list-disc text-sm text-gray-700">
+                  <li class="mb-2">
+                    <strong>RS ARI CANTI KAB. GIANYAR</strong><br>
+                    Wilayah: GIANYAR<br>
+                    Alamat: Jl. Raya Mas No.88x, MAS, Kecamatan Ubud, Kabupaten Gianyar, Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>RSUD. PAYANGAN KAB.GIANYAR</strong><br>
+                    Wilayah: GIANYAR<br>
+                    Alamat: Jl. Raya Payangan, Melinggih, Payangan, Kabupaten Gianyar, Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>RS. KENAK MEDIKA GIANYAR</strong><br>
+                    Wilayah: GIANYAR<br>
+                    Alamat: Jl. Raya Mas, Kecamatan Ubud, Kabupaten Gianyar, Bali
+                  </li>
+                </ul>
+              </details>
+              
+              <details class="border text-sm border-gray-300 rounded">
+                <summary class="px-4 py-2 cursor-pointer bg-gray-100 hover:bg-gray-200">
+                  <strong>Ida Bagus Gde Dwitatmaja</strong> – 2 RS – Wilayah: BANGLI – 📞 081285319706
+                </summary>
+                <ul class="px-6 py-2 list-disc text-sm text-gray-700">
+                  <li class="mb-2">
+                    <strong>RSUD KAB. BANGLI</strong><br>
+                    Wilayah: BANGLI<br>
+                    Alamat: Jl. Brigjen Ngurah Rai No.10, Kawan, Kec. Bangli, Kabupaten Bangli, Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>RS BANGLI MEDIKA CANTI (BMC) KAB. BANGLI</strong><br>
+                    Wilayah: BANGLI<br>
+                    Alamat: Jl. L.C. Subak Aya, Kawan, Kec. Bangli, Kabupaten Bangli, Bali
+                  </li>
+                </ul>
+              </details>
+              
+              <details class="border text-sm border-gray-300 rounded">
+                <summary class="px-4 py-2 cursor-pointer bg-gray-100 hover:bg-gray-200">
+                  <strong>Ida Bagus Putu Puja Wisthana</strong> – 4 RS – Wilayah: DENPASAR – 📞 081239173269
+                </summary>
+                <ul class="px-6 py-2 list-disc text-sm text-gray-700">
+                  <li class="mb-2">
+                    <strong>RSUP PROF. dr. I.G.N.G. NGOERAH Sanglah</strong><br>
+                    Wilayah: DENPASAR<br>
+                    Alamat: Jl. Diponegoro, Dauh Puri Klod, Denpasar Barat, Denpasar, Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>RSUD WANGAYA KOTA DENPASAR</strong><br>
+                    Wilayah: DENPASAR<br>
+                    Alamat: Jl. Kartini No.133 Denpasar, Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>RS KASIH IBU KOTA DENPASAR</strong><br>
+                    Wilayah: DENPASAR<br>
+                    Alamat: Jl. Teuku Umar 120, Denpasar, Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>RS BALI INTERNATIONAL HOSPITAL (PT PERTAMEDIKA BALI HOSPITAL)</strong><br>
+                    Wilayah: DENPASAR<br>
+                    Alamat: Jl. Bypass Ngurah Rai No.126, Sanur Kaja Denpasar Selatan
+                  </li>
+                </ul>
+              </details>
+              <details class="border text-sm border-gray-300 rounded">
+                <summary class="px-4 py-2 cursor-pointer bg-gray-100 hover:bg-gray-200">
+                  <strong>Joshua Fanny PP</strong> – 1 RS – Wilayah: BADUNG – 📞 082176846801
+                </summary>
+                <ul class="px-6 py-2 list-disc text-sm text-gray-700">
+                  <li class="mb-2">
+                    <strong>RSUD MANGUSADA KAB. BADUNG</strong><br>
+                    Wilayah: BADUNG<br>
+                    Alamat: Jalan Raya Kapal, Mangupura, Mengwi, Kapal, Kec. Mengwi, Kabupaten Badung, Bali
+                  </li>
+                </ul>
+              </details>
+              
+              <details class="border text-sm border-gray-300 rounded">
+                <summary class="px-4 py-2 cursor-pointer bg-gray-100 hover:bg-gray-200">
+                  <strong>Kadek Budi Nurcahyani</strong> – 1 RS – Wilayah: BULELENG – 📞 08123806819
+                </summary>
+                <ul class="px-6 py-2 list-disc text-sm text-gray-700">
+                  <li class="mb-2">
+                    <strong>RS BALIMED, KAB. BULELENG</strong><br>
+                    Wilayah: BULELENG<br>
+                    Alamat: Jl. Gunung Lempuyang No.9X Br.Tegal Buleleng
+                  </li>
+                </ul>
+              </details>
+              
+              <details class="border text-sm border-gray-300 rounded">
+                <summary class="px-4 py-2 cursor-pointer bg-gray-100 hover:bg-gray-200">
+                  <strong>Komang Dini Andriani P</strong> – 3 RS – Wilayah: DENPASAR – 📞 081233408723
+                </summary>
+                <ul class="px-6 py-2 list-disc text-sm text-gray-700">
+                  <li class="mb-2">
+                    <strong>RS SURYA HUSADHA KOTA DENPASAR</strong><br>
+                    Wilayah: DENPASAR<br>
+                    Alamat: Jl. Pulau Serangan No.7, Denpasar, Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>RS PRIMA MEDIKA KOTA DENPASAR</strong><br>
+                    Wilayah: DENPASAR<br>
+                    Alamat: Jl. Raya Sesetan No. 10, Denpasar, Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>RS SURYA HUSADHA UBUNG KOTA DENPASAR</strong><br>
+                    Wilayah: DENPASAR<br>
+                    Alamat: Jl. Cokroaminoto 356, Denpasar, Bali
+                  </li>
+                </ul>
+              </details>
+              
+              <details class="border text-sm border-gray-300 rounded">
+                <summary class="px-4 py-2 cursor-pointer bg-gray-100 hover:bg-gray-200">
+                  <strong>Mahadi</strong> – 6 RS – Wilayah: DENPASAR – 📞 082163630885
+                </summary>
+                <ul class="px-6 py-2 list-disc text-sm text-gray-700">
+                  <li class="mb-2">
+                    <strong>RS PURI RAHARJA KOTA DENPASAR</strong><br>
+                    Wilayah: DENPASAR<br>
+                    Alamat: Jl. WR Supratman No.14-19, Dangin Puri Kangin, Denpasar Utara, Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>RS DHARMA YADNYA KOTA DENPASAR</strong><br>
+                    Wilayah: DENPASAR<br>
+                    Alamat: Jl. WR.Supratman 256 Denpasar, Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>RS BHAYANGKARA TRIJATA KOTA DENPASAR</strong><br>
+                    Wilayah: DENPASAR<br>
+                    Alamat: Jl. Trijata No. 32 Sumerta Kelod 2F, Denpasar, Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>RSUD BALI MANDARA KOTA DENPASAR</strong><br>
+                    Wilayah: DENPASAR<br>
+                    Alamat: Jl. Bypass Ngurah Rai No.548, Sanur Kauh, Denpasar Selatan, Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>RS.MATA BALI MANDARA DENPASAR</strong><br>
+                    Wilayah: DENPASAR<br>
+                    Alamat: Jl. Angsoka No.8, Dangin Puri Kangin, Kec. Denpasar Utara, Kota Denpasar Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>KLINIK UTAMA BUNGA EMAS</strong><br>
+                    Wilayah: DENPASAR<br>
+                    Alamat: Jl.Melati No.1 Dangin Puri Denpasar Timur Bali
+                  </li>
+                </ul>
+              </details>
+              
+              <details class="border text-sm border-gray-300 rounded">
+                <summary class="px-4 py-2 cursor-pointer bg-gray-100 hover:bg-gray-200">
+                  <strong>Ni Made Dian Agustiani</strong> – 2 RS – Wilayah: DENPASAR – 📞 081271773687
+                </summary>
+                <ul class="px-6 py-2 list-disc text-sm text-gray-700">
+                  <li class="mb-2">
+                    <strong>RSAD TK.II UDAYANA KOTA DENPASAR</strong><br>
+                    Wilayah: DENPASAR<br>
+                    Alamat: Jl. P.B Sudirman No.1 Denpasar, Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>RS MANUABA KOTA DENPASAR</strong><br>
+                    Wilayah: DENPASAR<br>
+                    Alamat: Jl. Cokroaminoto No.28, Ubung, Kec. Denpasar Utara, Bali
+                  </li>
+                </ul>
+              </details>
+              <details class="border text-sm border-gray-300 rounded">
+                <summary class="px-4 py-2 cursor-pointer bg-gray-100 hover:bg-gray-200">
+                  <strong>Nurli Rahman</strong> – 4 RS – Wilayah: BADUNG, TABANAN – 📞 08123908750
+                </summary>
+                <ul class="px-6 py-2 list-disc text-sm text-gray-700">
+                  <li class="mb-2">
+                    <strong>RS WINDU HUSADHA BADUNG</strong><br>
+                    Wilayah: BADUNG<br>
+                    Alamat: JL. Raya Mambal Ubud Mekar Bhiwana Kec.Abiansemal Kabupaten Badung
+                  </li>
+                  <li class="mb-2">
+                    <strong>KLINIK PRATAMA TUNAS HARAPAN BADUNG</strong><br>
+                    Wilayah: BADUNG<br>
+                    Alamat: Jalan Raya Denpasar-Bedugul Mengwi, wrdi Bhuwana Kecamatan mengwi Kabupaten Badung
+                  </li>
+                  <li class="mb-2">
+                    <strong>RS SEMARA RATIH KAB. TABANAN</strong><br>
+                    Wilayah: TABANAN<br>
+                    Alamat: Jl. Raya Denpasar Singaraja Desa Luwus Baturiti, Mekarsari, Kabupaten Tabanan, Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>RS. BALI HOLISTIK KAB. TABANAN</strong><br>
+                    Wilayah: TABANAN<br>
+                    Alamat: Jalan Raya Umabian, Kecamatan Marga, Peken, Kec. Tabanan, Kab.Tabanan, Bali
+                  </li>
+                </ul>
+              </details>
+              
+              <details class="border text-sm border-gray-300 rounded">
+                <summary class="px-4 py-2 cursor-pointer bg-gray-100 hover:bg-gray-200">
+                  <strong>Putu Agus Kurniawan</strong> – 3 RS – Wilayah: GIANYAR – 📞 082147429298
+                </summary>
+                <ul class="px-6 py-2 list-disc text-sm text-gray-700">
+                  <li class="mb-2">
+                    <strong>RSUD SANJIWANI KAB. GIANYAR</strong><br>
+                    Wilayah: GIANYAR<br>
+                    Alamat: Jl. Ciung Wanara-Gianyar No.2, Gianyar, Kec. Gianyar, Kab.Gianyar, Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>RS GANESHA KAB. GIANYAR</strong><br>
+                    Wilayah: GIANYAR<br>
+                    Alamat: Jalan Raya Celuk Sukawati, Batubulan, Gianyar, Kabupaten Gianyar, Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>RS KASIH IBU SABA KAB. GIANYAR</strong><br>
+                    Wilayah: GIANYAR<br>
+                    Alamat: Jl. Pantai Saba No.9, Saba, Kec. Blahbatuh, Kabupaten Gianyar, Bali
+                  </li>
+                </ul>
+              </details>
+              
+              <details class="border text-sm border-gray-300 rounded">
+                <summary class="px-4 py-2 cursor-pointer bg-gray-100 hover:bg-gray-200">
+                  <strong>Putu Bayu HR Pande</strong> – 2 RS – Wilayah: KLUNGKUNG – 📞 088908892594
+                </summary>
+                <ul class="px-6 py-2 list-disc text-sm text-gray-700">
+                  <li class="mb-2">
+                    <strong>RS. GEMA SANTI NUSA PENIDA</strong><br>
+                    Wilayah: KLUNGKUNG<br>
+                    Alamat: Jl. Pendidikan, Br. Nyuh, Ds. Ped, Nusa Penida, Kabupaten Klungkung, Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>KLINIK PRATAMA LEMBONGAN MEDICAL CLINIC</strong><br>
+                    Wilayah: KLUNGKUNG<br>
+                    Alamat: Jln.Banjar/Dusun Kaja, Lembongan, Kec.Nusa Penida, Kabupaten Klungkung
+                  </li>
+                </ul>
+              </details>
+              
+              <details class="border text-sm border-gray-300 rounded">
+                <summary class="px-4 py-2 cursor-pointer bg-gray-100 hover:bg-gray-200">
+                  <strong>Putu Novi Satriani Rahayu</strong> – 2 RS – Wilayah: DENPASAR – 📞 081339625858
+                </summary>
+                <ul class="px-6 py-2 list-disc text-sm text-gray-700">
+                  <li class="mb-2">
+                    <strong>RS BALI ROYAL KOTA DENPASAR</strong><br>
+                    Wilayah: DENPASAR<br>
+                    Alamat: Jl. Tantular No. 6 Renon, Denpasar, Bali
+                  </li>
+                  <li class="mb-2">
+                    <strong>RSKB. DHARMA USADHA SIDHI(KLINIK DHARMA SIDHI)</strong><br>
+                    Wilayah: DENPASAR<br>
+                    Alamat: Jl. Serma Kawi No.13-17, Dauh Puri Klod, Kec. Denpasar Bar., Kota Denpasar, Bali
+                  </li>
+                </ul>
+              </details>
+              
+              <details class="border text-sm border-gray-300 rounded">
+                <summary class="px-4 py-2 cursor-pointer bg-gray-100 hover:bg-gray-200">
+                  <strong>Putu Yudhi Pusdita</strong> – 1 RS – Wilayah: BULELENG – 📞 081339211641
+                </summary>
+                <ul class="px-6 py-2 list-disc text-sm text-gray-700">
+                  <li class="mb-2">
+                    <strong>RS KARYA DHARMA HUSADA KAB. BULELENG</strong><br>
+                    Wilayah: BULELENG<br>
+                    Alamat: Jl. Yudistira No. 7, Singaraja
+                  </li>
+                </ul>
+              </details>
+                                                        
+          </div>
+      
+          <button class="mt-4 bg-blue-600 hover:bg-blue-700 text-white p-2 rounded w-full"
+            onclick="document.getElementById('kontakModal').classList.add('hidden')">Tutup</button>
+        </div>
+      </div>
+      
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.16.4/flowbite.min.js"></script>
+</body>
+</html>

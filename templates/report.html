@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Survei Jasa Raharja</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Flowbite -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.16.4/flowbite.min.css">
+</head>
+<body class="bg-gray-50 font-sans  text-sm">
+    <!-- Navigasi Utama -->
+    <div class="max-w-7xl mx-auto px-4 py-4 bg-white shadow-sm rounded-b flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6">
+      <div>
+        <h1 class="text-2xl font-bold text-blue-500">Laporan Survei Jasa Raharja</h1>
+        <p class="text-gray-500">Rekap hasil survei kepuasan layanan berdasarkan data responden</p>
+      </div>
+      <div class="flex gap-2 mt-2 sm:mt-0">
+        <a href="/dashboard" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition">
+          ⬅️ Dashboard
+        </a>
+        <a href="/report" class="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-2 px-4 rounded transition">
+            🙋‍♂️ Data Responden
+        </a>
+        <a href="/laporan" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded transition">
+            🗒️ Laporan
+        </a>
+      </div>
+    </div>
+    <div class="max-w-7xl mx-auto mt-8"> 
+        
+        <div class="section"> 
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-2 text-left text-xs text-sm text-gray-500 uppercase tracking-wider">Aksi</th>
+                            <th class="px-4 py-2 text-left text-xs text-sm text-gray-500 uppercase tracking-wider">Nama</th>
+                            <th class="px-4 py-2 text-left text-xs text-sm text-gray-500 uppercase tracking-wider">Usia</th>
+                            <th class="px-4 py-2 text-left text-xs text-sm text-gray-500 uppercase tracking-wider">Nomor HP</th>
+                            <th class="px-4 py-2 text-left text-xs text-sm text-gray-500 uppercase tracking-wider">Tanggal Kecelakaan</th>
+                            <th class="px-4 py-2 text-left text-xs text-sm text-gray-500 uppercase tracking-wider">Lokasi Kecelakaan</th>
+                            <th class="px-4 py-2 text-left text-xs text-sm text-gray-500 uppercase tracking-wider">Status Pajak</th>
+                            <th class="px-4 py-2 text-left text-xs text-sm text-gray-500 uppercase tracking-wider">Rumah Sakit</th>
+                            <th class="px-4 py-2 text-left text-xs text-sm text-gray-500 uppercase tracking-wider">Nopol</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200 text-sm">
+                        {% for row in data %}
+                        <tr>
+                            <td class="px-4 py-2 whitespace-nowrap">
+                                <div class="flex gap-2">
+                                    <a href="{{ url_for('detail', id=row.id) }}" class="text-blue-600 hover:text-blue-800 text-md">👁️</a>
+                                    <form method="POST" action="{{ url_for('delete', id=row.id) }}" onsubmit="return confirm('Hapus data ini?')">
+                                      <button type="submit" class="text-red-600 hover:text-red-800">🗑️</button>
+                                    </form>
+                                  </div>
+                                  
+                            </td>
+                            <td class="px-4 py-2 whitespace-nowrap">{{ row['name'] }}</td>
+                            <td class="px-4 py-2 whitespace-nowrap">{{ row['age'] }}</td>
+                            <td class="px-4 py-2 whitespace-nowrap">{{ row['phone'] }}</td>
+                            <td class="px-4 py-2 whitespace-nowrap">{{ row['accident_date'] }}</td>
+                            <td class="px-4 py-2 whitespace-nowrap">{{ row['location'] }}</td>
+                            <td class="px-4 py-2 whitespace-nowrap">{{ row['tax_status'] }}</td>
+                            <td class="px-4 py-2 whitespace-nowrap">{{ row['hospital'] }}</td>
+                            <td class="px-4 py-2 whitespace-nowrap">{{ row['vehicle'] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- <div class="mt-6 text-center">
+            <a href="{{ url_for('export') }}" class="bg-blue-500 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
+                Export Data
+            </a>
+        </div> -->
+    </div>
+
+    <!-- Flowbite JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.16.4/flowbite.min.js"></script>
+</body>
+</html>

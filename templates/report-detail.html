@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Survei Jasa Raharja</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Flowbite -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.16.4/flowbite.min.css">
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="max-w-4xl mx-auto mt-8">
+        <h1 class="text-2xl font-bold text-center text-blue-500 mb-6">Detail Survei Pelayanan Jasa Raharja</h1>
+        
+        <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+            <h2 class="text-xl font-semibold mb-4">Informasi Pribadi</h2>
+            <div class="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                    <p class="text-sm font-semibold">Nama Lengkap:</p>
+                    <p>{{ data.name }}</p>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold">Usia:</p>
+                    <p>{{ data.age }}</p>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold">Nomor HP:</p>
+                    <p>{{ data.phone }}</p>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold">Tanggal Kecelakaan:</p>
+                    <p>{{ data.accident_date }}</p>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold">Lokasi Kecelakaan:</p>
+                    <p>{{ data.location }}</p>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold">Nomor Polisi Kendaraan:</p>
+                    <p>{{ data.vehicle }}</p>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold">Status Pajak:</p>
+                    <p>{{ data.tax_status }}</p>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold">Rumah Sakit:</p>
+                    <p>{{ data.hospital }}</p>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold">Kabupaten:</p>
+                    <p>{{ data.kabupaten }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white p-6 rounded-lg shadow-md mb-6 text-sm">
+            <h2 class="text-xl font-semibold mb-4">Survei Pelayanan</h2>
+            <div class="mb-4">
+                <p class="text-sm font-semibold">1. Setelah kecelakaan, apakah ada petugas Jasa Raharja yang menghubungi Anda?</p>
+                <p>{{ data.q1 }}</p>
+            </div>
+            <div class="mb-4">
+                <p class="text-sm font-semibold">2. Darimana Anda mengetahui tentang Jasa Raharja?</p>
+                <p>{{ data.q2 }}</p>
+            </div>
+            <div class="mb-4">
+                <p class="text-sm font-semibold">3. Siapa yang mengurus dokumen persyaratan santunan?</p>
+                <p>{{ data.q3 }}</p>
+            </div>
+            <div class="mb-4">
+                <p class="text-sm font-semibold">4. Bagaimana proses pengurusan dokumen persyaratan santunan?</p>
+                <p>{{ data.q4 }}</p>
+            </div>
+            <div class="mb-4">
+                <p class="text-sm font-semibold">5. Berapa kali Anda mengunjungi kantor Jasa Raharja?</p>
+                <p>{{ data.q5 }}</p>
+            </div>
+            <div class="mb-4">
+                <p class="text-sm font-semibold">6. Berapa kali Anda mengunjungi instansi lain untuk proses santunan?</p>
+                <p>{{ data.q6 }}</p>
+            </div>
+            <div class="mb-4">
+                <p class="text-sm font-semibold">7. Bagaimana tingkat kewajaran biaya rawat inap?</p>
+                <p>{{ data.q7 }}</p>
+            </div>
+            <div class="mb-4">
+                <p class="text-sm font-semibold">8. Apakah ada biaya tambahan yang dibayarkan kepada petugas Jasa Raharja?</p>
+                <p>{{ data.q8 }}</p>
+            </div>
+            <div class="mb-4">
+                <p class="text-sm font-semibold">9. Bagaimana kesan Anda terhadap pelayanan Jasa Raharja?</p>
+                <p>{{ data.q9 }}</p>
+                {% if data.q9_reason %}
+                <p class="mt-2">Alasan: {{ data.q9_reason }}</p>
+                {% endif %}
+            </div>
+            <div class="mb-4">
+                <p class="text-sm font-semibold">10. Bagaimana kesan Anda terhadap pelayanan rumah sakit?</p>
+                <p>{{ data.q10 }}</p>
+                {% if data.q10_reason %}
+                <p class="mt-2">Alasan: {{ data.q10_reason }}</p>
+                {% endif %}
+            </div>
+            <div class="mb-4">
+                <p class="text-sm font-semibold">11. Saran dan masukan bagi pelayanan Jasa Raharja:</p>
+                <p>{{ data.suggestion }}</p>
+            </div>
+        </div>
+        
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-xl font-semibold mb-4">Pernyataan</h2>
+            <div class="mb-4">
+                <p class="text-sm font-semibold">Saya menyatakan bahwa informasi diatas benar dan dapat dipergunakan dalam hal informasi produk, sosialisasi serta pemanfaatan data bagi Jasa Raharja</p>
+                <p>{{ data.statement }}</p>
+            </div>
+            <div>
+                <p class="text-sm font-semibold">Dengan mengisi survey ini, saya memahami hak santunan yang dijamin oleh Jasa Raharja</p>
+                <p>{{ data.understanding }}</p>
+            </div>
+        </div>
+        
+        <div class="mt-6 text-center">
+            <a href="{{ url_for('report') }}" class="bg-blue-500 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
+                Kembali ke Laporan
+            </a>
+        </div>
+    </div>
+
+    <!-- Flowbite JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.16.4/flowbite.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survei Pelayanan Jasa Raharja</title>
+    <!-- Tailwind CSS via CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Flowbite -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.16.4/flowbite.min.css">  
+    <style>
+        .warning {
+            color: red;
+            font-weight: bold;
+            display: none;
+        }
+        .hidden {
+            display: none;
+        }
+        .emoji-label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .validation-message {
+            color: red;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen p-4">
+    <div class="max-w-4xl mx-auto">             
+        <div class="thank-you" id="thankYou">
+            <div class="p-6 text-center bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                <h2 class="text-2xl font-bold mb-4 text-blue-700">Terima Kasih!</h2>
+                <p class="text-gray-600 mb-4">
+                    Santunan yang Anda terima merupakan bentuk nyata dari kepedulian negara yang bersumber dari pembayaran Pajak Kendaraan dan SWDKLLJ. 
+                    Dengan mengisi survei ini, Anda membantu kami meningkatkan pelayanan bagi seluruh masyarakat Indonesia.
+                </p>
+                <button class="mt-4 bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300" onclick='window.location.href="/"'>
+                    Kembali ke halaman awal.
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
