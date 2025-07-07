@@ -62,7 +62,7 @@ def submit():
         name = request.form['name']
         age = request.form['age']
         phone = request.form['phone']
-        alamat = request.form['kecamatan']
+        alamat = request.form['alamat']
         kecamatan = request.form['kecamatan']
         kabupaten = request.form['kabupaten']
         accident_date = request.form['accident-date']
@@ -95,7 +95,7 @@ def submit():
                 hospital, kecamatan, kabupaten, q1, q2, q3, q4, q5, q6, q7, q8, q9,
                 q9_reason, q10, q10_reason, suggestion, statement, understanding
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ''', (
             name, age, phone, alamat, accident_date, location, vehicle, tax_status,
             hospital, kecamatan, kabupaten, q1, q2, q3, q4, q5, q6, q7, q8, q9,
