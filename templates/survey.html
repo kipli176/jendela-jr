@@ -63,21 +63,32 @@
             required>
           <div id="name-error" class="validation-message">Nama harus diisi</div>
         </div>
+        <div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="mb-4">
+              <label class="block mb-1 text-sm font-semibold text-gray-700">Usia:</label>
+              <input type="number" id="age" name="age"
+                class="shadow text-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                required>
+              <div id="age-error" class="validation-message">Usia harus diisi</div>
+            </div>
 
-        <div class="mb-4">
-          <label class="block mb-1 text-sm font-semibold text-gray-700">Usia:</label>
-          <input type="number" id="age" name="age"
-            class="shadow text-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            required>
-          <div id="age-error" class="validation-message">Usia harus diisi</div>
+            <div>
+              <label class="block mb-1 text-sm font-semibold text-gray-700">Nomor HP:</label>
+              <input type="tel" id="phone" name="phone"
+                class="shadow text-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                required>
+              <div id="phone-error" class="validation-message">Nomor HP harus diisi</div>
+            </div>
+          </div>
         </div>
 
         <div class="mb-4">
-          <label class="block mb-1 text-sm font-semibold text-gray-700">Nomor HP:</label>
-          <input type="tel" id="phone" name="phone"
+          <label class="block mb-1 text-sm font-semibold text-gray-700">Alamat:</label>
+          <input type="text" id="alamat" name="alamat"
             class="shadow text-sm appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             required>
-          <div id="phone-error" class="validation-message">Nomor HP harus diisi</div>
+          <div id="alamat-error" class="validation-message">Alamat harus diisi</div>
         </div>
 
         <div class="mb-4">
@@ -121,7 +132,7 @@
           <div id="spinner" class="text-blue-500 text-sm mt-2 hidden">🔄 Mengecek status pajak...</div>
           <div id="tax-warning" class="text-sm mt-2 text-red-500 hidden">⚠️ Jangan lupa membayar pajak kendaraan.</div>
           <div id="tax-thanks" class="text-sm mt-2 text-green-600 hidden">✅ Terima kasih sudah membayar pajak.</div>
-
+          <div id="tax-info" class="text-sm mt-2 text-gray-700 hidden"></div>
         </div>
 
         <div class="mb-4 hidden">
@@ -420,6 +431,7 @@
         const nopol = vehicleInput.value.trim().toUpperCase();
         const warningMsg = document.getElementById("tax-warning");
         const thanksMsg = document.getElementById("tax-thanks");
+        const taxInfo = document.getElementById("tax-info");
 
         // Reset pesan
         warningMsg.classList.add("hidden");
@@ -449,15 +461,26 @@
           if (data.status === "LUNAS") {
             taxPaid.checked = true;
             thanksMsg.classList.remove("hidden");
-            console.log(data.status)
+
+            if (data.transactions && data.transactions.length > 0) {
+              const t = data.transactions[0];
+              // taxInfo.innerText = `✅ Pajak berlaku sampai: ${t.akhir}, transaksi terakhir: ${t.transaksi}`;
+              taxInfo.innerText = `✅ Pajak berlaku sampai: ${t.akhir}`;
+              taxInfo.classList.remove("hidden");
+            }
+            console.log(data.status);
           } else {
             taxPaid.checked = false;
             taxUnpaid.checked = true;
             warningMsg.classList.remove("hidden");
-            console.log(data.status)
+            taxInfo.classList.add("hidden");
+            console.log(data.status);
           }
 
+
         } catch (err) {
+          taxInfo.classList.add("hidden");
+          taxInfo.innerText = "";
           alert("Gagal memeriksa status pajak.");
           console.error(err);
         } finally {
@@ -1125,6 +1148,11 @@
       // Validasi nomor HP
       if (document.getElementById('phone').value.trim() === '') {
         document.getElementById('phone-error').style.display = 'block';
+        isValid = false;
+      }
+      
+      if (document.getElementById('alamat').value.trim() === '') {
+        document.getElementById('alamat-error').style.display = 'block';
         isValid = false;
       }
 

@@ -17,6 +17,7 @@ def init_db():
             name TEXT NOT NULL,
             age INTEGER NOT NULL,
             phone TEXT NOT NULL,
+            alamat TEXT NOT NULL,
             kecamatan TEXT NOT NULL,
             kabupaten TEXT NOT NULL,
             accident_date TEXT NOT NULL,
@@ -61,6 +62,7 @@ def submit():
         name = request.form['name']
         age = request.form['age']
         phone = request.form['phone']
+        alamat = request.form['kecamatan']
         kecamatan = request.form['kecamatan']
         kabupaten = request.form['kabupaten']
         accident_date = request.form['accident-date']
@@ -89,13 +91,13 @@ def submit():
         cursor = conn.cursor()
         cursor.execute('''
             INSERT INTO surveys (
-                name, age, phone, accident_date, location, vehicle, tax_status,
+                name, age, phone, alamat, accident_date, location, vehicle, tax_status,
                 hospital, kecamatan, kabupaten, q1, q2, q3, q4, q5, q6, q7, q8, q9,
                 q9_reason, q10, q10_reason, suggestion, statement, understanding
             )
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ''', (
-            name, age, phone, accident_date, location, vehicle, tax_status,
+            name, age, phone, alamat, accident_date, location, vehicle, tax_status,
             hospital, kecamatan, kabupaten, q1, q2, q3, q4, q5, q6, q7, q8, q9,
             q9_reason, q10, q10_reason, suggestion, statement, understanding
         ))
@@ -722,4 +724,4 @@ def dashboarde():
 
 if __name__ == '__main__':
     init_db()
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5004, debug=True)
