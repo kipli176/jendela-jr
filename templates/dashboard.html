@@ -14,6 +14,8 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
   <style>
     body { overflow: hidden; }
     .marquee {
@@ -141,9 +143,22 @@
     const chartOptions = {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: { y: { beginAtZero: true } }
+      plugins: {
+        legend: { display: false },
+        datalabels: {
+          anchor: 'end',
+          align: 'top',
+          formatter: Math.round,
+          font: {
+            weight: 'bold'
+          }
+        }
+      },
+      scales: {
+        y: { beginAtZero: true }
+      }
     };
+
 
     new Chart(document.getElementById('satisfactionChart'), {
       type: 'bar',
@@ -154,8 +169,10 @@
           backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444']
         }]
       },
-      options: chartOptions
+      options: chartOptions,
+      plugins: [ChartDataLabels]
     });
+
 
     new Chart(document.getElementById('taxChart'), {
       type: 'pie',
@@ -166,7 +183,8 @@
           backgroundColor: ['#10b981', '#f87171']
         }]
       },
-      options: chartOptions
+      options: chartOptions,
+      plugins: [ChartDataLabels]
     });
 
     new Chart(document.getElementById('kabupatenChart'), {
@@ -178,7 +196,8 @@
           backgroundColor: '#6366f1'
         }]
       },
-      options: chartOptions
+      options: chartOptions,
+      plugins: [ChartDataLabels]
     });
 
     new Chart(document.getElementById('hospitalChart'), {
@@ -190,7 +209,8 @@
           backgroundColor: '#14b8a6'
         }]
       },
-      options: chartOptions
+      options: chartOptions,
+      plugins: [ChartDataLabels]
     });
 
     new Chart(document.getElementById('trendChart'), {
@@ -204,7 +224,8 @@
           fill: false
         }]
       },
-      options: chartOptions
+      options: chartOptions,
+      plugins: [ChartDataLabels]
     });
   </script>
 </body>

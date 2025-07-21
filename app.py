@@ -39,7 +39,8 @@ def init_db():
             q10_reason TEXT,
             suggestion TEXT,
             statement BOOLEAN NOT NULL,
-            understanding BOOLEAN NOT NULL
+            understanding BOOLEAN NOT NULL,
+            created_at TEXT DEFAULT (datetime('now'))
         )
     ''')
     conn.commit()
@@ -243,6 +244,25 @@ def laporan():
         predikat=predikat
     )
 
+
+@app.route("/export_excel")
+def export_excel():
+    from flask import request, send_file
+    import sqlite3
+    import pandas as pd
+    conn = sqlite3.connect('survey.db')
+    start_date = request.args.get("start_date")
+    end_date = request.args.get("end_date")
+
+    query = """
+    SELECT * FROM surveys
+    WHERE date(created_at) BETWEEN ? AND ?
+    """
+    df = pd.read_sql_query(query, conn, params=(start_date, end_date))
+
+    output_path = "filtered_survey.xlsx"
+    df.to_excel(output_path, index=False)
+    return send_file(output_path, as_attachment=True)
 
 @app.route('/laporan/excel')
 def export_laporan_excel():
@@ -724,4 +744,4 @@ def dashboarde():
 
 if __name__ == '__main__':
     init_db()
-    app.run(host='0.0.0.0', port=5004, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
