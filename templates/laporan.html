@@ -32,23 +32,33 @@
     <!-- Laporan Konten -->
     <div id="laporan" class="max-w-7xl mx-auto p-6 bg-white text-sm shadow rounded max-w-[794px]">
       <form method="get" action="/export_excel" class="flex flex-col sm:flex-row sm:items-end gap-4 mb-6">
-        <div class="flex flex-col min-w-72">
-          <label for="start_date" class="mb-1 font-semibold text-gray-700">Tanggal Mulai</label>
-          <input type="date" id="start_date" name="start_date" class="border border-gray-300 p-2 rounded w-full">
+        <div class="flex flex-col">
+          <label class="font-semibold text-gray-700 mb-1">Pilih Triwulan</label>
+          <select id="triwulan" class="border p-2 rounded">
+            <option value="auto">Triwulan Otomatis (3 Bulan Terakhir)</option>
+            <option value="Q1">Triwulan 1 (Jan - Mar)</option>
+            <option value="Q2">Triwulan 2 (Apr - Jun)</option>
+            <option value="Q3">Triwulan 3 (Jul - Sep)</option>
+            <option value="Q4">Triwulan 4 (Okt - Des)</option>
+          </select>
         </div>
       
-        <div class="flex flex-col min-w-72">
-          <label for="end_date" class="mb-1 font-semibold text-gray-700">Tanggal Akhir</label>
-          <input type="date" id="end_date" name="end_date" class="border border-gray-300 p-2 rounded w-full">
+        <div class="flex flex-col">
+          <label class="font-semibold text-gray-700 mb-1">Tanggal Mulai</label>
+          <input type="date" id="start_date" name="start_date" class="border p-2 rounded">
         </div>
       
-        <div class="flex flex-col w-full sm:w-auto">
-          <label class="invisible">Export</label> <!-- untuk meratakan tinggi -->
-          <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
-            📤 Export Excel
-          </button>
+        <div class="flex flex-col">
+          <label class="font-semibold text-gray-700 mb-1">Tanggal Akhir</label>
+          <input type="date" id="end_date" name="end_date" class="border p-2 rounded">
+        </div>
+      
+        <div class="flex flex-col">
+          <label class="invisible">Export</label>
+          <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">📤 Export Excel</button>
         </div>
       </form>
+      
       
       
       {% for q, jawaban_dict in rekap.items() %}
@@ -130,17 +140,57 @@
     </div>
   </body>
   <script>
-    function formatDateToInput(date) {
-      return date.toISOString().split('T')[0];
+    const triwulanSelect = document.getElementById("triwulan");
+    const startInput = document.getElementById("start_date");
+    const endInput = document.getElementById("end_date");
+  
+    function formatDate(date) {
+      return date.toISOString().split("T")[0];
     }
   
-    const endDate = new Date();
-    const startDate = new Date();
-    startDate.setMonth(startDate.getMonth() - 3);
+    function setTriwulanDates(q) {
+      const year = new Date().getFullYear();
+      let start, end;
   
-    document.getElementById("start_date").value = formatDateToInput(startDate);
-    document.getElementById("end_date").value = formatDateToInput(endDate);
+      switch (q) {
+        case "Q1":
+          start = new Date(year, 0, 1);
+          end = new Date(year, 2, 31);
+          break;
+        case "Q2":
+          start = new Date(year, 3, 1);
+          end = new Date(year, 5, 30);
+          break;
+        case "Q3":
+          start = new Date(year, 6, 1);
+          end = new Date(year, 8, 30);
+          break;
+        case "Q4":
+          start = new Date(year, 9, 1);
+          end = new Date(year, 11, 31);
+          break;
+        case "auto":
+        default:
+          end = new Date();
+          start = new Date();
+          start.setMonth(start.getMonth() - 3);
+          break;
+      }
+  
+      startInput.value = formatDate(start);
+      endInput.value = formatDate(end);
+    }
+  
+    triwulanSelect.addEventListener("change", (e) => {
+      setTriwulanDates(e.target.value);
+    });
+  
+    // Set default on page load
+    window.addEventListener("load", () => {
+      setTriwulanDates("auto");
+    });
   </script>
+  
   
 </body>
 </html>

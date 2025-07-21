@@ -94,13 +94,13 @@ def submit():
             INSERT INTO surveys (
                 name, age, phone, alamat, accident_date, location, vehicle, tax_status,
                 hospital, kecamatan, kabupaten, q1, q2, q3, q4, q5, q6, q7, q8, q9,
-                q9_reason, q10, q10_reason, suggestion, statement, understanding
+                q9_reason, q10, q10_reason, suggestion, statement, understanding, created_at
             )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ''', (
             name, age, phone, alamat, accident_date, location, vehicle, tax_status,
             hospital, kecamatan, kabupaten, q1, q2, q3, q4, q5, q6, q7, q8, q9,
-            q9_reason, q10, q10_reason, suggestion, statement, understanding
+            q9_reason, q10, q10_reason, suggestion, statement, understanding, datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         ))
         conn.commit()
         conn.close()
@@ -744,4 +744,4 @@ def dashboarde():
 
 if __name__ == '__main__':
     init_db()
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5005, debug=True)
