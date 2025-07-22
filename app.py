@@ -548,7 +548,7 @@ def dashboard():
 
 
     # Tanggal terakhir diisi
-    cursor.execute("SELECT MAX(created_at) FROM surveys")
+    cursor.execute("SELECT DATE(MAX(created_at)) FROM surveys")
     last_date = cursor.fetchone()[0]
     response_rate = "-"
     if last_date:
@@ -584,7 +584,7 @@ def dashboard():
 
     # Trend mingguan
     cursor.execute("""
-        SELECT strftime('%Y-%W', created_at) AS minggu, COUNT(*)
+        SELECT strftime('%Y-%W', DATE(created_at)) AS minggu, COUNT(*)
         FROM surveys GROUP BY minggu ORDER BY minggu
     """)
     trend_data = cursor.fetchall()
