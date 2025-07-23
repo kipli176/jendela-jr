@@ -426,7 +426,7 @@ def export_laporan_excel():
 def report():
     conn = sqlite3.connect('survey.db')
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM surveys')
+    cursor.execute('SELECT * FROM surveys order by created_at desc')
     rows = cursor.fetchall()
     conn.close()
 
