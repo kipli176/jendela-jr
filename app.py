@@ -584,7 +584,7 @@ def dashboard():
 
     # Trend mingguan
     cursor.execute("""
-        SELECT strftime('%Y-%W', DATE(created_at)) AS minggu, COUNT(*)
+        SELECT strftime('%Y-%m-%d', DATE(created_at)) AS minggu, COUNT(*)
         FROM surveys GROUP BY minggu ORDER BY minggu
     """)
     trend_data = cursor.fetchall()
