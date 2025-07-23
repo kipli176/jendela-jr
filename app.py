@@ -426,7 +426,7 @@ def export_laporan_excel():
 def report():
     conn = sqlite3.connect('survey.db')
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM surveys order by created_at desc')
+    cursor.execute('SELECT * FROM surveys ORDER BY DATETIME(created_at) DESC')
     rows = cursor.fetchall()
     conn.close()
 
@@ -571,19 +571,19 @@ def dashboard():
     # Kabupaten
     cursor.execute("""
         SELECT 
-        CASE 
-            WHEN kabupaten IS NULL OR TRIM(kabupaten) = '' THEN 'Lainnya'
-            ELSE kabupaten
-        END AS kabupaten,
-        COUNT(*) AS jumlah
-        FROM surveys
-        GROUP BY 
-        CASE 
-            WHEN kabupaten IS NULL OR TRIM(kabupaten) = '' THEN 'Lainnya'
-            ELSE kabupaten
-        END
-        ORDER BY jumlah DESC
-        LIMIT 5;
+    CASE 
+        WHEN kabupaten IS NULL OR TRIM(kabupaten) = '' THEN 'Lainnya'
+        ELSE kabupaten
+    END AS kabupaten,
+    COUNT(*) AS jumlah
+    FROM surveys
+    GROUP BY 
+    CASE 
+        WHEN kabupaten IS NULL OR TRIM(kabupaten) = '' THEN 'Lainnya'
+        ELSE kabupaten
+    END
+    ORDER BY jumlah DESC
+    LIMIT 5;
 
     """)
     kabupaten_data = dict(cursor.fetchall())
