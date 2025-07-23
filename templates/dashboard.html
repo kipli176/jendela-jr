@@ -144,18 +144,28 @@
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: { display: false },
         datalabels: {
+          color: '#000', // Warna label (misalnya hitam)
           anchor: 'end',
-          align: 'top',
-          formatter: Math.round,
+          align: 'start',
+          offset: -10,
           font: {
             weight: 'bold'
-          }
+          },
+          formatter: Math.round // Untuk memastikan nilai integer tampil
+        },
+        legend: {
+          display: false
         }
       },
-      scales: {
-        y: { beginAtZero: true }
+      scales: {        
+        y: {
+          beginAtZero: true,
+          precision: 0,
+          ticks: {
+            stepSize: 1
+          }
+        }
       }
     };
 
