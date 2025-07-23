@@ -570,8 +570,21 @@ def dashboard():
 
     # Kabupaten
     cursor.execute("""
-        SELECT kabupaten, COUNT(*) FROM surveys
-        GROUP BY kabupaten ORDER BY COUNT(*) DESC LIMIT 5
+        SELECT 
+        CASE 
+            WHEN kabupaten IS NULL OR TRIM(kabupaten) = '' THEN 'Lainnya'
+            ELSE kabupaten
+        END AS kabupaten,
+        COUNT(*) AS jumlah
+        FROM surveys
+        GROUP BY 
+        CASE 
+            WHEN kabupaten IS NULL OR TRIM(kabupaten) = '' THEN 'Lainnya'
+            ELSE kabupaten
+        END
+        ORDER BY jumlah DESC
+        LIMIT 5;
+
     """)
     kabupaten_data = dict(cursor.fetchall())
 
