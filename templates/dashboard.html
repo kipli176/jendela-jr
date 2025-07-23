@@ -58,19 +58,19 @@
   <!-- Grid Atas: Statistik -->
   <div class="grid grid-cols-2 md:grid-cols-4 gap-4 px-6 py-4">
     <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-4 text-center">
-      <div class="text-4xl font-bold text-blue-700 dark:text-white">{{ total_responses }}</div>
+      <div class="text-4xl font-bold text-blue-500 dark:text-white">{{ total_responses }}</div>
       <div>Total Responden</div>
     </div>
     <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-4 text-center">
-      <div class="text-4xl font-bold text-blue-700 dark:text-white">{{ avg_age }}</div>
+      <div class="text-4xl font-bold text-blue-500 dark:text-white">{{ avg_age }}</div>
       <div>Usia Rata-rata</div>
     </div>
     <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-4 text-center">
-      <div class="text-4xl font-bold text-blue-700 dark:text-white">{{ avg_satisfaction }}%</div>
+      <div class="text-4xl font-bold text-blue-500 dark:text-white">{{ avg_satisfaction }}%</div>
       <div>Skor Kepuasan</div>
     </div>
     <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-4 text-center">
-      <div class="text-xl font-semibold text-blue-700 dark:text-white">{{ response_rate }}</div>
+      <div class="text-xl font-semibold text-blue-500 dark:text-white">{{ response_rate }}</div>
       <div>Terakhir Diisi</div>
     </div>
   </div>
@@ -101,7 +101,7 @@
 
   <!-- Ticker -->
   {% if suggestions %}
-  <div class="bg-blue-100 dark:bg-gray-700 py-2 px-6 marquee text-lg font-medium text-blue-900 dark:text-white">
+  <div class="bg-blue-100 dark:bg-gray-700 py-2 px-6 marquee text-lg font-medium text-blue-700 dark:text-white">
     <span>
       {% for s in suggestions %}
         💬 "{{ s.text }}" — {{ s.date }} &nbsp;&nbsp;&nbsp;&nbsp;
